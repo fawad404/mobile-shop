@@ -1,0 +1,39 @@
+import React from 'react'
+import headerIphone from '../../assets/Images/header-Iphone.png'
+
+export default function HeroSection() {
+
+    return (
+      <div className="bg-gradient-to-br from-black via-gray-900 to-black min-h-[85vh] relative overflow-hidden rounded-3xl m-4 md:m-6 md:p-16 transition-all duration-300">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto">
+          <div className="space-y-6 md:space-y-8 z-10 p-6 md:p-0">
+            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight animate-fadeIn">
+              Your One-Stop<br />Store For<br />
+              <span className="text-amber-500 hover:text-amber-400 transition-colors duration-300">
+                Mobile
+              </span>
+            </h1>
+            <p className="text-gray-300 max-w-md text-lg md:text-xl leading-relaxed">
+              Best deals on all types of Mobile phones, Mobile Accessories, Mobile Trade In & Mobile Repair
+            </p>
+            <button className="group relative overflow-hidden bg-[#b091f8] text-black font-bold px-10 py-4 rounded-full text-lg transition-all duration-300">
+              <span className="relative z-10"><a href="/shop">Shop Now!</a></span>
+              <div className="absolute inset-0 h-full w-full transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-out rounded-full bg-white origin-center"></div>
+            </button>
+          </div>
+          
+          <div className="relative mt-12 md:mt-0">
+            <div className="relative w-[350px] h-[350px] md:w-[500px] md:h-[500px] animate-float">
+              <img
+                src={headerIphone}
+                alt="iPhone front view"
+                className="absolute top-0 right-0 w-auto transform rotate-12 z-20 hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+
