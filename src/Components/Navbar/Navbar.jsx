@@ -1,126 +1,116 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, ShoppingCart, User, Sun, Moon } from 'lucide-react';
-import logo from "../../assets/Images/logo.png"
+import { Link, useLocation } from 'react-router-dom';
+import { User, ShoppingCart } from 'lucide-react';
+import logo from "../../assets/Images/logo.png";
+
+const navItems = [
+  { path: "/", label: "Home" },
+  { path: "/shop", label: "Shop" },
+  { path: "/about", label: "About" },
+  { path: "/contact", label: "Contact" },
+  { path:"/repair-booking", label: "Repair Booking"},
+  { path:"/repair-tracker", label: "Repair Tracker"}
+];
+
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
       }
     };
 
-    document.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    return () => {
-      document.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
-
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+  const handleToggle = () => {
+    setMenuOpen(!menuOpen);
   };
 
-  return (
-    <nav className={`fixed w-full z-30 transition-all duration-300 top-0 h-auto ${
-      scrolled ? 'bg-white shadow-lg dark:bg-gray-800' : 'bg-gray-800 dark:bg-gray-900'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0">
-              <img className="h-14 w-14" src={logo} alt="Logo" />
-            </Link>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <NavLink to="/">Home</NavLink>
-                <NavLink to="/shop">Products</NavLink>
-                <NavLink to="/about">About</NavLink>
-                <NavLink to="/contact">Contact</NavLink>
-              </div>
-            </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
-              <button className="p-1 rounded-full text-gray-300 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white dark:text-gray-300 dark:hover:text-white">
-                <span className="sr-only">View shopping cart</span>
-                <ShoppingCart className="h-6 w-6" />
-              </button>
-              <button className="p-1 rounded-full text-gray-300 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white ml-3 dark:text-gray-300 dark:hover:text-white">
-                <span className="sr-only">View account</span>
-                <User className="h-6 w-6" />
-              </button>
+  const isActive = (path) => location.pathname === path;
 
-            </div>
-          </div>
-          <div className="-mr-2 flex md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-gray-100 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
-            >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? (
-                <X className="block h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Menu className="block h-6 w-6" aria-hidden="true" />
-              )}
+  return (
+    <header className={`fixed w-full z-[60] transition-all duration-500 ${
+      isScrolled 
+        ? 'bg-white/95 backdrop-blur-lg shadow-lg py-2' 
+        : 'bg-transparent py-4'
+    } top-0`}>
+      <div className="max-w-screen-2xl relative w-full mx-auto flex flex-wrap items-center gap-4 px-4 sm:px-10">
+        <div className="flex items-center">
+          <Link to="/" className={`flex items-center hover:scale-105 ${isScrolled ? 'scale-90' : ''} transition-all duration-300`}>
+            <img src={logo} alt="logo" className="w-20" />
+          </Link>
+        </div>
+
+        <div id="collapseMenu" className={`${menuOpen ? "block" : "hidden"} lg:block lg:static fixed inset-0 z-[70]`}>
+          <div className={`${menuOpen ? "opacity-50" : "opacity-0 pointer-events-none"} fixed inset-0 bg-black transition-opacity duration-300 lg:hidden z-[71]`} 
+            onClick={handleToggle} />
+          
+          <button id="toggleClose" className="lg:hidden fixed top-4 right-4 z-[73] rounded-full bg-blue-600 p-3 hover:bg-blue-700 transition-colors"
+            onClick={handleToggle}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 fill-white" viewBox="0 0 320.591 320.591">
+              <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"></path>
+              <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"></path>
+            </svg>
+          </button>
+
+          <ul className={`lg:flex nav-items ${
+            isScrolled ? 'text-gray-800' : 'text-gray-400'
+          } lg:ml-32 lg:gap-x-12 text-lg lg:items-center
+            max-lg:fixed max-lg:bg-white max-lg:w-[280px] max-lg:top-0 max-lg:left-0 
+            max-lg:h-screen max-lg:p-8 max-lg:shadow-2xl max-lg:z-[72] 
+            max-lg:transform max-lg:transition-transform max-lg:duration-300
+            ${menuOpen ? 'max-lg:translate-x-0' : 'max-lg:-translate-x-full'}`}>
+            {navItems.map((item) => (
+              <li key={item.path} className="max-lg:border-b max-lg:py-3 px-3">
+                <Link 
+                  to={item.path} 
+                  className={`block font-medium transition-all duration-300 
+                    hover:text-gray-900 hover:scale-105 hover:translate-x-1
+                    ${isActive(item.path) ? "text-gray-900 scale-105" : ""}`}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex ml-auto items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2.5 rounded-full transition-all duration-300 
+              hover:bg-gray-100 hover:scale-105 active:scale-95">
+              <User className="w-6 h-6" />
+            </button>
+            
+            <button className="p-2.5 rounded-full relative transition-all duration-300 
+              hover:bg-gray-100 hover:scale-105 active:scale-95">
+              <ShoppingCart className="w-6 h-6" />
+              <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-xs 
+                font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
-      <div className={`md:hidden ${isOpen ? 'block fixed inset-0 bg-gray-800 dark:bg-gray-900' : 'hidden'}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <MobileNavLink to="/" onClick={toggleMenu}>Home</MobileNavLink>
-          <MobileNavLink to="/shop" onClick={toggleMenu}>Products</MobileNavLink>
-          <MobileNavLink to="/about" onClick={toggleMenu}>About</MobileNavLink>
-          <MobileNavLink to="/contact" onClick={toggleMenu}>Contact</MobileNavLink>
-        </div>
-        <div className="pt-4 pb-3 border-t border-gray-700 dark:border-gray-700">
-          <div className="flex items-center px-5">
-            <div className="flex-shrink-0">
-              <img className="h-10 w-10 rounded-full" src="/avatar.jpg" alt="User avatar" />
-            </div>
-            <div className="ml-3">
-              <div className="text-base font-medium leading-none text-gray-300 dark:text-white">Tom Cook</div>
-              <div className="text-sm font-medium leading-none text-gray-400 dark:text-gray-400">tom@example.com</div>
-            </div>
-          </div>
-         
+          <button id="toggleOpen" 
+            className={`lg:hidden hover:scale-105 transition-all duration-300 
+            ${isScrolled ? 'text-gray-800' : 'text-gray-400'}`} 
+            onClick={handleToggle}>
+            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
+            </svg>
+          </button>
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
-
-const NavLink = ({ to, children }) => (
-  <Link
-    to={to}
-    className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-lg font-medium transition-colors duration-200 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700 relative"
-  >
-    {children}
-    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gray-900 dark:bg-white transform scale-x-0 transition-transform duration-200 origin-left hover:scale-x-100"></span>
-  </Link>
-);
-
-const MobileNavLink = ({ to, children, onClick }) => (
-  <Link
-    to={to}
-    className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-md text-lg font-medium transition-colors duration-200 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700 relative"
-    onClick={onClick}
-  >
-    {children}
-    <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gray-900 dark:bg-white transform scale-x-0 transition-transform duration-200 origin-left hover:scale-x-100"></span>
-  </Link>
-);
 
 export default Navbar;
 
