@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card } from "../../Components/ui/card"
-import { Input } from "../../Components/ui/Input"
+import { Input } from "../../Components/ui/input"
 import { Textarea } from "../../Components/ui/textarea"
 import { Button } from "../../Components/ui/button"
 import { Label } from "../../Components/ui/label"

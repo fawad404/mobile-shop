@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Input } from "../../Components/ui/Input"
+import { Input } from "../../Components/ui/input"
 import { Button } from "../../Components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../Components/ui/card"
 import { Smartphone, PenToolIcon as Tool, CheckCircle, Truck, Package, AlertCircle, User, Info, Clipboard } from 'lucide-react'
