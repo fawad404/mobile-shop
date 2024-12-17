@@ -343,7 +343,7 @@ export default function MultiStepForm() {
           {currentStep === 2 ? (
             <span>Please Choose Device <span className="text-primary">Manufacturer</span></span>
           ) : (
-            `Step ${currentStep}: ${steps[currentStep - 1].title}`
+            `Step ${currentStep}: ${steps[currentStep - 1]}`
           )}
         </h2>
         {renderStep()}
