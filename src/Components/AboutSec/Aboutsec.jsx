@@ -31,14 +31,14 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <div className="bg-gradient-to-br from-blue-900 via-purple-900 to-pink-800 min-h-[90vh] relative overflow-hidden rounded-b-[3rem] shadow-2xl">
+    <div className="min-h-screen bg-white text-black">
+      <div className="bg-gradient-to-br from-black via-gray-800 to-orange-700 min-h-[90vh] relative overflow-hidden rounded-b-[3rem] shadow-2xl">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cGF0aCBkPSJNMCAwTDUgNVpNNSAwTDAgNVoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KPC9zdmc+')] opacity-20" />
         <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 py-16 md:py-24">
           <div className="space-y-8 z-10">
             <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight animate-fadeIn">
               Your One-Stop<br />Store For<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 hover:from-purple-400 hover:to-pink-400 transition-all duration-300">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-black hover:from-black hover:to-orange-400 transition-all duration-300">
                 Mobile
               </span>
             </h1>
@@ -46,9 +46,9 @@ const AboutPage = () => {
               Best deals on all types of Mobile phones, Accessories, Trade-Ins & Repairs
             </p>
             <Link to='/shop'>
-            <button className="group relative overflow-hidden bg-white text-blue-900 font-bold px-10 py-4 rounded-full text-lg transition-all duration-300 hover:text-white">
+            <button className="group relative overflow-hidden bg-white text-black font-bold px-10 py-4 rounded-full text-lg transition-all duration-300 hover:text-white">
               <span className="relative z-10">Shop Now!</span>
-              <div className="absolute inset-0 h-full w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-full bg-gradient-to-r from-pink-500 to-blue-500 origin-left"></div>
+              <div className="absolute inset-0 h-full w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-full bg-gradient-to-r from-orange-500 to-black origin-left"></div>
             </button>
             </Link>
           </div>
@@ -74,15 +74,15 @@ const AboutPage = () => {
       <main className="container mx-auto px-4 py-16">
         {/* Features Section */}
         <section className="mb-24">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-900">Our Innovations</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center text-black">Our Innovations</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-2xl hover:-translate-y-1 group">
                 <div className="p-8">
-                  <div className="mb-6 text-blue-600 group-hover:text-pink-500 transition-colors duration-300">
+                  <div className="mb-6 text-black group-hover:text-orange-500 transition-colors duration-300">
                     {feature.icon}
                   </div>
-                  <h3 className="text-2xl font-semibold mb-3 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-2xl font-semibold mb-3 group-hover:text-black transition-colors">
                     {feature.title}
                   </h3>
                   <p className="text-gray-700">{feature.description}</p>
@@ -93,13 +93,13 @@ const AboutPage = () => {
         </section>
 
         {/* Stats Section */}
-        <section className="mb-24 bg-gradient-to-r from-blue-100 to-purple-100 rounded-3xl p-12 relative overflow-hidden">
+        <section className="mb-24 bg-gradient-to-r from-black to-orange-100 rounded-3xl p-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPHBhdGggZD0iTTAgMEw2MCA2MFpNNjAgMEwwIDYwWiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utb3BhY2l0eT0iMC4wNSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjwvc3ZnPg==')] opacity-50" />
-          <h2 className="text-4xl font-bold mb-12 text-center relative z-10 text-gray-900">Our Impact</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center relative z-10 text-black">Our Impact</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
             {stats.map((stat, index) => (
               <div key={index} className="text-center bg-white bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-xl p-6 shadow-lg">
-                <div className="text-5xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-600">
+                <div className="text-5xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-black to-orange-600">
                   {stat.value}
                 </div>
                 <div className="text-sm font-medium text-gray-800">{stat.label}</div>
@@ -110,12 +110,12 @@ const AboutPage = () => {
 
         {/* CTA Section */}
         <section className="text-center mb-24">
-          <h2 className="text-4xl font-bold mb-6 text-gray-900">Ready to Experience the Future?</h2>
+          <h2 className="text-4xl font-bold mb-6 text-black">Ready to Experience the Future?</h2>
           <p className="text-xl text-gray-700 mb-10 max-w-2xl mx-auto">
             Join millions of satisfied customers and discover why NextGen Mobile is the leader in mobile innovation.
           </p>
           <Link to='/shop'>
-          <button className="bg-gradient-to-r from-blue-600 to-pink-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-pink-600 hover:to-blue-600 transition-all duration-300 group shadow-lg hover:shadow-xl">
+          <button className="bg-gradient-to-r from-black to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-600 hover:to-black transition-all duration-300 group shadow-lg hover:shadow-xl">
              Explore Our Products
             <ArrowRight className="inline-block ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>

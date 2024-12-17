@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Input } from "../../Components/ui/input"
@@ -72,9 +71,9 @@ export default function MobileRepairTracker() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-purple-100 p-8">
-      <Card className="max-w-4xl mx-auto shadow-2xl">
-        <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+    <div className=" bg-gradient-to-br from-blue-100 via-white to-purple-100 p-8">
+      <Card className="max-w-4xl mx-auto shadow-2xl mt-28">
+        <CardHeader className="bg-gradient-to-br from-[#d1d5db] via-[#6b7280] to-[#374151]">
           <CardTitle className="text-3xl font-bold text-center">Mobile Repair Tracker</CardTitle>
           <CardDescription className="text-center text-blue-100">Track the status of your device repair</CardDescription>
         </CardHeader>
@@ -113,7 +112,7 @@ export default function MobileRepairTracker() {
                       className="w-full"
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button type="submit" className="flex mx-auto px-4 py-4 bg-orange-600 hover:bg-orange-500/95 text-white">
                     Track Repair
                   </Button>
                 </form>

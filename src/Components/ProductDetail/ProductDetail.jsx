@@ -21,6 +21,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showCheckoutOptions, setShowCheckoutOptions] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -49,6 +50,16 @@ const ProductDetail = () => {
     setSelectedImage(image);
   };
 
+  const addToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log('Current cart:', cart); // Log the current cart
+    cart.push(product);
+    console.log('Updated cart:', cart); // Log the updated cart
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('storage')); // Trigger the storage event
+    setShowCheckoutOptions(true);
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -58,10 +69,10 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl mt-36">
       <button
         onClick={handleBackClick}
-        className="flex items-center space-x-2 mb-6 text-gray-600 hover:text-blue-600 transition-colors"
+        className="flex items-center space-x-2 mb-6 text-black hover:text-[#ff6600] transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
         <span className="text-lg">Back to Products</span>
@@ -75,7 +86,6 @@ const ProductDetail = () => {
               src={selectedImage}
               alt={product.title}
               layout="fill"
-             
               className="transition-transform duration-300 ease-in-out hover:scale-105"
             />
           </div>
@@ -99,7 +109,7 @@ const ProductDetail = () => {
 
         {/* Product Details */}
         <div className="space-y-8">
-          <h1 className="text-4xl font-bold text-gray-900 leading-tight">{product.title}</h1>
+          <h1 className="text-4xl font-bold text-black leading-tight">{product.title}</h1>
           <div className="flex items-center space-x-2">
             <div className="flex">
               {[...Array(5)].map((_, index) => (
@@ -107,7 +117,7 @@ const ProductDetail = () => {
                   key={index}
                   className={`w-5 h-5 ${
                     index < Math.round(product.rating.rate)
-                      ? 'text-yellow-400 fill-current'
+                      ? 'text-[#ff6600] fill-current'
                       : 'text-gray-300'
                   }`}
                 />
@@ -115,14 +125,14 @@ const ProductDetail = () => {
             </div>
             <span className="text-gray-600">({product.rating.count} reviews)</span>
           </div>
-          <p className="text-2xl font-semibold">
+          <p className="text-2xl font-semibold text-black">
             ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </p>
 
           {/* Category */}
           <div>
-            <h3 className="text-xl font-semibold mb-3">Category</h3>
-            <span className="inline-block bg-blue-50 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+            <h3 className="text-xl font-semibold mb-3 text-black">Category</h3>
+            <span className="inline-block bg-[#ff6600] text-white px-4 py-2 rounded-full text-sm font-medium">
               {product.category}
             </span>
           </div>
@@ -132,26 +142,50 @@ const ProductDetail = () => {
           {/* Add to Cart */}
           <div className="pt-6 mt-6 border-t border-gray-200">
             <div className="flex items-center space-x-4">
-              <button className="flex-1 group bg-blue-600 text-white py-3 px-6 rounded-lg  transition-colors duration-300 flex items-start justify-center space-x-3 text-lg font-semibold relative overflow-hidden">
-                <div className="absolute inset-0 h-full w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out bg-gradient-to-r from-green-500 to-blue-500 origin-left"></div>
+              <button
+                onClick={() => addToCart(product)}
+                className="flex-1 group bg-[#ff6600] text-white py-3 px-6 rounded-lg transition-colors duration-300 flex items-start justify-center space-x-3 text-lg font-semibold relative overflow-hidden"
+              >
+                <div className="absolute inset-0 h-full w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out bg-gradient-to-r from-[#ff6600] to-[#ff9900] origin-left"></div>
                 <ShoppingCart className="w-6 h-6 z-20 group-hover:scale-110" />
                 <span className='z-20 group-hover:scale-110'>Add to Cart</span>
-
               </button>
               <button className="p-3 border-2 border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-300">
-                <Heart className="w-7 h-7 text-red-500" />
+                <Heart className="w-7 h-7 text-[#ff6600]" />
               </button>
             </div>
           </div>
         </div>
       </div>
 
+      {showCheckoutOptions && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Product added to cart!</h2>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => navigate('/check-out')}
+                className="bg-[#ff6600] text-white py-2 px-4 rounded-lg"
+              >
+                Go to Checkout
+              </button>
+              <button
+                onClick={() => setShowCheckoutOptions(false)}
+                className="bg-gray-300 text-black py-2 px-4 rounded-lg"
+              >
+                Continue Shopping
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Reviews Section */}
       <section className="mt-16 border-t border-gray-200 pt-12">
-        <h2 className="text-3xl font-bold mb-8 text-gray-900">Customer Reviews</h2>
+        <h2 className="text-3xl font-bold mb-8 text-black">Customer Reviews</h2>
         <div className="flex flex-col md:flex-row gap-12">
           <div className="md:w-1/3">
-            <div className="text-5xl font-bold text-gray-900 mb-2">
+            <div className="text-5xl font-bold text-black mb-2">
               {product.rating.rate.toFixed(1)}
               <span className="text-xl text-gray-500">/5</span>
             </div>
@@ -161,7 +195,7 @@ const ProductDetail = () => {
                   key={index}
                   className={`w-6 h-6 ${
                     index < Math.floor(product.rating.rate)
-                      ? 'text-yellow-400 fill-current'
+                      ? 'text-[#ff6600] fill-current'
                       : 'text-gray-300'
                   }`}
                 />
@@ -175,7 +209,7 @@ const ProductDetail = () => {
                 <div className="w-20 text-sm text-gray-600 font-medium">{stars} stars</div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 mx-3">
                   <div
-                    className="bg-yellow-400 h-2.5 rounded-full"
+                    className="bg-[#ff6600] h-2.5 rounded-full"
                     style={{ width: `${percentage}%` }}
                   ></div>
                 </div>

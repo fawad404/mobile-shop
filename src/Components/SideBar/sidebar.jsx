@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import RangeSlider from "./rangebar";
+import { DollarSign  } from "lucide-react";
 
 const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
   const [checkedCategories, setCheckedCategories] = useState([]);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [filterSearch, setFilterSearch] = useState('');
   const [categorySearch, setCategorySearch] = useState('');
 
@@ -47,7 +48,7 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
     <div className="w-full lg:w-1/3 xl:w-1/4 bg-gradient-to-b from-white to-blue-50 border-r shadow-lg">
       {/* Mobile Toggle */}
       <button 
-        className="lg:hidden w-full px-6 py-3 text-white bg-gradient-to-r from-blue-400 to-cyan-600 flex items-center justify-between"
+        className="lg:hidden w-full px-6 py-3 text-white bg-gradient-to-r from-orange-400 to-black flex items-center justify-between mt-16"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="text-lg font-semibold flex items-center">
@@ -72,8 +73,8 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
         <div className="mb-8 relative">
           <div className="absolute top-0 right-0 w-20 h-20 opacity-10">
             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="8" className="text-blue-500" />
-              <path d="M50 10V90M10 50H90" stroke="currentColor" strokeWidth="8" className="text-blue-500" />
+              <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="8" className="text-orange-500" />
+              <path d="M50 10V90M10 50H90" stroke="currentColor" strokeWidth="8" className="text-orange-500" />
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Smart Filters</h2>
@@ -83,9 +84,7 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
         {/* Price Range with Label */}
         <div className="mb-8">
           <div className="flex items-center mb-4">
-            <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <DollarSign className="w-7 h-7 text-orange-500 mr-2" />
             <h3 className="font-semibold text-lg">Price Range</h3>
           </div>
           <div className="bg-white p-6 rounded-lg border border-blue-100 shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -97,7 +96,7 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
         {/* Product Categories */}
         <div className="mb-8 ">
           <div className="flex items-center mb-4">
-            <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
             <h3 className="font-semibold text-lg">Product Categories</h3>

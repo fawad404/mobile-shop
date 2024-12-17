@@ -32,7 +32,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white text-gray-800">
       {/* Header Section */}
       <header className="px-4 md:px-8 lg:px-16 relative overflow-hidden py-32">
         <motion.div
@@ -41,23 +41,23 @@ export default function ContactPage() {
           transition={{ duration: 0.5 }}
           className="max-w-4xl mx-auto text-center relative z-10"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-black">
             Get in Touch
           </h1>
           <p className="text-xl text-gray-600">We're here to help and answer any question you might have.</p>
         </motion.div>
         <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-          <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+          <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-black-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         </div>
       </header>
 
       {/* Contact Info Section */}
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-white shadow-inner">
         <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
-          <ContactCard icon={<Phone className="text-blue-600" size={24} />} title="Phone" content="+1 (555) 123-4567" />
-          <ContactCard icon={<Mail className="text-blue-600" size={24} />} title="Email" content="contact@example.com" />
-          <ContactCard icon={<MapPin className="text-blue-600" size={24} />} title="Address" content="123 Main St, Anytown, USA" />
+          <ContactCard icon={<Phone className="text-orange-600" size={24} />} title="Phone" content="+1 (555) 123-4567" />
+          <ContactCard icon={<Mail className="text-orange-600" size={24} />} title="Email" content="contact@example.com" />
+          <ContactCard icon={<MapPin className="text-orange-600" size={24} />} title="Address" content="123 Main St, Anytown, USA" />
         </div>
       </section>
 
@@ -81,7 +81,7 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="mt-1 bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-gray-900"
+                    className="mt-1 bg-gray-50 border-gray-200 focus:border-orange-500 focus:ring-orange-500 text-gray-900"
                   />
                 </div>
                 <div>
@@ -93,7 +93,7 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="mt-1 bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-gray-900"
+                    className="mt-1 bg-gray-50 border-gray-200 focus:border-orange-500 focus:ring-orange-500 text-gray-900"
                   />
                 </div>
               </div>
@@ -105,7 +105,7 @@ export default function ContactPage() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="mt-1 bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-gray-900"
+                  className="mt-1 bg-gray-50 border-gray-200 focus:border-orange-500 focus:ring-orange-500 text-gray-900"
                 />
               </div>
               <div>
@@ -116,13 +116,13 @@ export default function ContactPage() {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="mt-1 bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-gray-900"
+                  className="mt-1 bg-gray-50 border-gray-200 focus:border-orange-500 focus:ring-orange-500 text-gray-900"
                   rows={4}
                 />
               </div>
               <Button 
                 type="submit" 
-                className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200"
+                className="w-full py-4 bg-gradient-to-r from-orange-600 to-black text-white hover:from-orange-700 hover:to-black transform hover:scale-[1.02] transition-all duration-200"
               >
                 Send Message
                 <Send className="ml-2" size={16} />
@@ -157,7 +157,7 @@ export default function ContactPage() {
                   </svg>
                 </div>
               </div>
-              <AlertDialogTitle className="text-2xl font-bold text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+              <AlertDialogTitle className="text-2xl font-bold text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-black">
                 Message Sent Successfully!
               </AlertDialogTitle>
               <AlertDialogDescription className="text-gray-600 text-center mb-6">
@@ -167,7 +167,7 @@ export default function ContactPage() {
             <AlertDialogFooter className="flex justify-center">
               <Button 
                 onClick={() => setIsSubmitted(false)} 
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 shadow-md hover:shadow-lg"
+                className="px-6 py-3 bg-gradient-to-r from-orange-600 to-black text-white rounded-lg font-medium hover:from-orange-700 hover:to-black transform hover:scale-[1.02] transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Got it, thanks!
               </Button>
@@ -182,7 +182,7 @@ export default function ContactPage() {
 function ContactCard({ icon, title, content }) {
   return (
     <Card className="bg-white border border-gray-100 shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center text-center">
-      <div className="mb-4 p-3 bg-blue-50 rounded-full">{icon}</div>
+      <div className="mb-4 p-3 bg-orange-50 rounded-full">{icon}</div>
       <h3 className="text-xl font-semibold mb-2 text-gray-800">{title}</h3>
       <p className="text-gray-600">{content}</p>
     </Card>

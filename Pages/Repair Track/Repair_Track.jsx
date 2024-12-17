@@ -4,7 +4,7 @@ import EnhancedSteps from '../../src/Components/Enhanced Steps/EnahncedSteps'
 
 const Repair_Track = () => {
   return (
-    <div className=' mt-16 '> 
+    <div className=''> 
       <MobileRepairTracker />
       <EnhancedSteps />
     </div>

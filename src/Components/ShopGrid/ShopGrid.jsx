@@ -17,6 +17,7 @@ const ShopGrid = () => {
     const [clearAll, setClearAll] = useState(false);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [tempSearch, setTempSearch] = useState('');
+    const [loading, setLoading] = useState(true);
     const options = [4, 8, 12, 16, 20];
 
     const handlePageChange = (page) => setCurrentPage(page);
@@ -43,12 +44,15 @@ const ShopGrid = () => {
 
     const fetchProducts = async () => {
         try {
+            setLoading(true);
             const response = await fetch("https://fakestoreapi.com/products/");
             const data = await response.json();
             setProducts(data);
             console.log(data);
         } catch (error) {
             console.error("Failed to fetch products:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -187,6 +191,15 @@ const ShopGrid = () => {
         </div>
     );
 
+    const SkeletonCard = () => (
+        <div className="flex flex-col justify-between p-2 sm:p-4 border rounded-md shadow-sm h-full bg-white animate-pulse">
+            <div className="bg-gray-300 h-32 sm:h-48 mb-2 sm:mb-4 rounded-md"></div>
+            <div className="bg-gray-300 h-4 mb-2 rounded-md"></div>
+            <div className="bg-gray-300 h-4 w-1/2 mb-4 rounded-md"></div>
+            <div className="bg-gray-300 h-8 w-full rounded-full"></div>
+        </div>
+    );
+
     return (
         <div className="flex flex-col lg:flex-row min-h-screen w-screen">
             <Sidebar onPriceRangeChange={handlePriceRangeChange} onCategoryChange={handleCategoryChange} clearAll={clearAll} />
@@ -194,7 +207,7 @@ const ShopGrid = () => {
                 <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row justify-between items-start lg:items-center py-2 sm:py-4 border-b border-gray-300">
                     {/* Left Section */}
                     <div className="w-full lg:w-auto space-y-2 sm:space-y-3">
-                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">Shop</h1>
+                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black">Shop</h1>
                         {isFilterApplied && (
                             <div className="flex flex-wrap gap-2 mb-4">
                                 <button
@@ -245,7 +258,7 @@ const ShopGrid = () => {
                         <div className="bg-gray-100 p-2 rounded-md shadow-md  items-center flex justify-center ">   
                         <Eye className="w-4 h-4 mr-1" />
                         <p className="text-xs sm:text-sm text-gray-700">
-                            Showing <strong className="text-blue-600"> {start} - {end} </strong> of <strong className="text-blue-600"> {filteredProducts.length} </strong> results
+                            Showing <strong className="text-[#ff6600]"> {start} - {end} </strong> of <strong className="text-[#ff6600]"> {filteredProducts.length} </strong> results
                         </p>
                         </div>
                     </div>
@@ -257,7 +270,7 @@ const ShopGrid = () => {
                                 placeholder="Search products..."
                                 value={tempSearch}
                                 onChange={handleTempSearchChange}
-                                className="w-full px-3 sm:px-4 py-2 pr-10 text-sm sm:text-base text-gray-700 bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                                className="w-full px-3 sm:px-4 py-2 pr-10 text-sm sm:text-base text-black bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#ff6600]"
                             />
                             <button 
                                 type="submit"
@@ -269,7 +282,7 @@ const ShopGrid = () => {
 
                         <div className="relative w-full sm:w-auto">
                             <select
-                                className="w-full appearance-none bg-white border border-gray-300 text-xs sm:text-sm text-gray-700 py-2 px-2 sm:px-3 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full appearance-none bg-white border border-gray-300 text-xs sm:text-sm text-gray-700 py-2 px-2 sm:px-3 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff6600]"
                                 value={sort}
                                 onChange={handleSortChange}
                             >
@@ -296,7 +309,9 @@ const ShopGrid = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6">
-                    {paginatedProducts.length > 0 ? (
+                    {loading ? (
+                        Array.from({ length: perPage }).map((_, index) => <SkeletonCard key={index} />)
+                    ) : paginatedProducts.length > 0 ? (
                         paginatedProducts.map((product, index) => (
                             <div
                                 key={index}
@@ -305,10 +320,10 @@ const ShopGrid = () => {
                             >
                                 <div>
                                     <img src="../../palceholder.png" alt={product.title} className="w-full h-32 sm:h-48 object-cover mb-2 sm:mb-4 rounded-md" />
-                                    <h3 className="font-medium text-sm sm:text-base text-gray-800 line-clamp-2 hover:text-purple-600 transition-colors">{product.title}</h3>
+                                    <h3 className="font-medium text-sm sm:text-base text-gray-800 line-clamp-2 hover:text-[#ff6600] transition-colors">{product.title}</h3>
                                     <p className="text-base sm:text-lg font-bold font-mono mt-1">${product.price}</p>
                                 </div>
-                                <button className="group relative overflow-hidden bg-purple-600 text-white font-bold px-6 py-2 rounded-full text-sm mt-4 transition-all duration-300 self-end hover:bg-purple-700">
+                                <button className="group relative overflow-hidden bg-[#ff6600] text-white font-bold px-6 py-2 rounded-full text-sm mt-4 transition-all duration-300 self-end hover:bg-[#e65c00]">
                                     <span className="relative z-10 group-hover:text-gray-600 transition-all duration-300">Add to Basket</span>
                                     <div className="absolute inset-0 h-full w-full transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-out rounded-full bg-white origin-center"></div>
                                 </button>
