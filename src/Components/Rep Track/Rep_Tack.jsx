@@ -1,5 +1,6 @@
+
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Input } from "../../Components/ui/input"
 import { Button } from "../../Components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../Components/ui/card"
@@ -71,11 +72,11 @@ export default function MobileRepairTracker() {
   }
 
   return (
-    <div className="mb-16  p-8">
-      <Card className="max-w-6xl mx-auto shadow-2xl">
-        <CardHeader className="bg-gradient-to-r  from-blue-100 via-white to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-purple-100 p-8">
+      <Card className="max-w-4xl mx-auto shadow-2xl">
+        <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <CardTitle className="text-3xl font-bold text-center">Mobile Repair Tracker</CardTitle>
-          <CardDescription className="text-center text-gray-300">Track the status of your device repair</CardDescription>
+          <CardDescription className="text-center text-blue-100">Track the status of your device repair</CardDescription>
         </CardHeader>
         <CardContent className="p-8">
           <AnimatePresence mode="wait">
@@ -112,7 +113,7 @@ export default function MobileRepairTracker() {
                       className="w-full"
                     />
                   </div>
-                  <Button type="submit" className="w-[200px] py-4 px-4 mx-auto flex bg-blue-600 hover:bg-blue-700 text-white transition duration-300 transform hover:scale-105">
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                     Track Repair
                   </Button>
                 </form>
@@ -126,7 +127,7 @@ export default function MobileRepairTracker() {
                 transition={{ duration: 0.3 }}
                 className="space-y-8"
               >
-                <Button onClick={handleBack} variant="outline" className="mb-4 hover:bg-gray-200 transition duration-300 transform hover:scale-105">
+                <Button onClick={handleBack} variant="outline" className="mb-4">
                   <ArrowLeft className="mr-2 h-4 w-4" /> Back to Tracker
                 </Button>
                 <div className="text-center">
@@ -141,13 +142,14 @@ export default function MobileRepairTracker() {
                   <InfoCard icon={User} title="Technician" content={repairStatus.technician} />
                 </div>
                 <div className="relative pt-8">
+                  <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-full bg-gray-300 z-0"></div>
                   <div className="relative z-10">
                     {repairSteps.map((step) => (
                       <motion.div
                         key={step.id}
                         className={`flex items-start mb-8 ${
                           step.id <= repairStatus.currentStep ? 'opacity-100' : 'opacity-50'
-                        } hover:bg-gray-100 transition duration-300 transform hover:scale-105 p-4 rounded-lg`}
+                        }`}
                         initial={{ x: -50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 0.5, delay: step.id * 0.1 }}
@@ -177,7 +179,7 @@ export default function MobileRepairTracker() {
 
 function InfoCard({ icon: Icon, title, content }) {
   return (
-    <Card className="bg-white shadow-md hover:bg-gray-100 transition duration-300 transform hover:scale-105">
+    <Card className="bg-white shadow-md">
       <CardContent className="p-4 flex items-center">
         <Icon className="h-8 w-8 text-blue-500 mr-4" />
         <div>
