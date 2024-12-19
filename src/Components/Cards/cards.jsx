@@ -59,7 +59,7 @@ export default function FeaturesSection() {
   return (
     <div className="space-y-12 py-12 px-4 md:px-6">
       {/* Features */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
         {features.map((feature, index) => {
           const Icon = feature.icon
           return (
@@ -77,7 +77,7 @@ export default function FeaturesSection() {
       </div>
 
       {/* Service Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 palce-items-center">
         {services.map((service, index) => (
           <Card key={index} className={`${service.bgColor} text-white overflow-hidden`}>
             <CardContent className="p-6 space-y-4">

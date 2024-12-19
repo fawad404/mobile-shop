@@ -1,88 +1,95 @@
-import React, { useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import  {React, useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Input } from '../../src/Components/ui/input'
-const Login = () => {
-  const [show, setShow] = useState(true); // Ensure the popup is always shown
-  const modalRef = useRef(null);
+import { Input } from '../../src/Components/ui/input' // Fixed import path for Input
+import { X } from 'lucide-react'
+
+const Login = ({ show, setShow }) => {
+  const [isLogin, setIsLogin] = useState(true)
+  const modalRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShow(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [setShow])
 
   return (
-    <section
-      className={`fixed top-0 right-0 w-full h-full bg-[#00000085] z-10 place-items-center flex justify-center transition-all duration-500 ${
-        show ? "flex" : "hidden"
-      }`}
-    >
-      <div className="contain flex justify-center items-center">
-        <motion.div
-          ref={modalRef}
-          initial={{ opacity: 0, y: "-150px" }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", duration: 1 }}
-          className="w-[406px] min-h-[450px] border border-[#F1F2F4] rounded-lg bg-white p-4 md:p-8 overflow-y-auto text-darkColor flex flex-col items-center relative"
-        >
-          <h2 className="w-full text-center text-2xl font-bold">
-            Sign In to Fiverr
-          </h2>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-2 w-full mt-10"
+    <>
+      {show && (
+        <div className="fixed inset-0 bg-black  bg-opacity-50 flex items-center justify-center z-50 top-0 left-0 w-screen h-screen">
+          <motion.div
+            ref={modalRef}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="w-full max-w-md bg-gradient-to-br from-orange-100 to-orange-50 rounded-2xl shadow-2xl overflow-hidden"
           >
-            <Input
-              showLabel={false}
-              htmlFor="username"
-              label="Username"
-              labelClassName="text-sm font-medium text-darkColor"
-              type="text"
-              name="username"
-              value={values.username}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={getError("username")}
-              id="username"
-              placeholder="Johndoe"
-              className="bg-white  border border-[#C7CBD1] w-full h-[40px] rounded px-4 focus:border-[1.5px] focus:border-primary outline-none text-sm"
-            />
-            <Input
-              showLabel={false}
-              htmlFor="password"
-              label="Password"
-              labelClassName="text-sm font-medium text-darkColor"
-              type="password"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={getError("password")}
-              id="password"
-              placeholder="********"
-              className="bg-white  border border-[#C7CBD1] w-full h-[40px] rounded px-4 focus:border-[1.5px] focus:border-primary outline-none text-sm"
-            />
-            <button
-              type="submit"
-              className="mt-5 bg-primary/80 hover:bg-primary w-full rounded-md text-white py-2 text-base font-semibold"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <img src={loader} alt="/" className="w-[40px]" />
-                </div>
-              ) : (
-                <p className="flex items-center justify-center gap-2">Login</p>
-              )}
-            </button>
-          </form>
-          <div
-            onClick={() => setShow(false)}
-            className="w-full border-t absolute bottom-0 py-4 bg-white z-10 px-8 flex items-center justify-center text-sm font-semibold text-darkColor gap-2"
-          >
-            Not a member yet?
-            <Link to="/join" className="text-primary">
-              Join now
-            </Link>
-          </div>
-        </motion.div>
-      </div>
-    </section>
+            <div className="relative p-8">
+              <button
+                onClick={() => setShow(false)}
+                className="absolute top-4 right-4 text-orange-600 hover:text-orange-800 transition-colors"
+              >
+                <X size={24} />
+              </button>
+              <h2 className="text-3xl font-bold text-center text-orange-800 mb-6">
+                {isLogin ? "Welcome Back!" : "Join Us Today"}
+              </h2>
+              <form className="space-y-4">
+                <Input
+                  type="text"
+                  name="username"
+                  id="username"
+                  placeholder="Username"
+                  className="w-full px-4 py-2 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-black placeholder-orange-400"
+                />
+                <Input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  className="w-full px-4 py-2 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-black placeholder-orange-400"
+                />
+                {!isLogin && (
+                  <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    className="w-full px-4 py-2 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-black placeholder-orange-400"
+                  />
+                )}
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-2 rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-md"
+                >
+                  {isLogin ? "Sign In" : "Sign Up"}
+                </button>
+              </form>
+              <div className="mt-6 text-center">
+                <p className="text-sm text-orange-700">
+                  {isLogin ? "Not a member yet?" : "Already have an account?"}
+                  <button
+                    onClick={() => setIsLogin(!isLogin)}
+                    className="ml-1 font-semibold text-orange-600 hover:text-orange-800 transition-colors"
+                  >
+                    {isLogin ? "Join now" : "Sign in"}
+                  </button>
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </>
   )
 }
 
 export default Login
+

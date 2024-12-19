@@ -7,7 +7,6 @@ import Navbar from "../../src/Components/Navbar/Navbar";
 const ShopPage = () => {
   return (
     <div>
-      <Navbar />
       <div className="flex mt-16">
         <ShopGrid />
       </div>

@@ -18,13 +18,13 @@ const Footer = () => {
             </p>
             <div className="space-y-3">
               <h3 className="font-semibold text-lg">Get in touch</h3>
-              <p className="text-base">Company Number: 15283128</p>
+              <p className="text-base">Company Number: +01 482 390394</p>
             </div>
             <div className="flex gap-4">
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">
+              <a href="https://facebook.com/p/PHONE-Cloud-100091062152222/" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">
+              <a href="https://www.instagram.com/phonecloudplusltd" target='_blank' className="text-gray-600 hover:text-gray-900 transition-colors duration-300">
                 <Instagram className="h-6 w-6" />
               </a>
               <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">
@@ -48,18 +48,18 @@ const Footer = () => {
           {/* Contact */}
           <div className="space-y-6">
             <h3 className="font-semibold text-lg">Contact</h3>
-            <div className="space-x-6 space-y-4 text-base flex flex-col">
+            <div className="flex flex-col space-y-3">
               <div className="flex items-center space-x-3 justify-center">
                 <MapPin className="h-6 w-6 flex-shrink-0" />
-                <p>Store Location: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet accusantium velit fugiat harum aperiam sit unde veniam quia numquam?</p>
+                <p>Store Location: 9 King Edward Street HU1 3RL</p>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-6 w-6 flex-shrink-0" />
-                <p>+12  34 71928743</p>
+                <p>+01 482 390394</p>
               </div>
               <div className="flex items-start space-x-3">
                 <Mail className="h-6 w-6 flex-shrink-0" />
-                <p>contact@temp.co.uk</p>
+                <a href='mailto:phonecloudplusltd@gmail.com' className='hover:text-orange-500'>phonedoudplusltd@gmail.com</a>
               </div>
             </div>
           </div>
@@ -83,8 +83,8 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Home className="h-6 w-6 flex-shrink-0" />
                 <div>
-                  <p className="font-semibold">Company Address:</p>
-                  <p className="text-base">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, a?</p>
+                  <p className="font-semibold">Store Address:</p>
+                  <p className="text-base">Store Location: 9 King Edward Street HU1 3RL</p>
                 </div>
               </div>
             </div>
