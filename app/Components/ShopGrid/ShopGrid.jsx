@@ -15,10 +15,10 @@ const ShopGrid = () => {
     const [priceRange, setPriceRange] = useState([0, 1550]);
     const [category, setCategory] = useState([]);
     const [clearAll, setClearAll] = useState(false);
-    const [isOnline, setIsOnline] = useState(false); // Default to false initially
+    const [isOnline, setIsOnline] = useState(false); 
 
     useEffect(() => {
-        
+
         setIsOnline(navigator.onLine);
 
         const handleOnlineStatusChange = () => {
