@@ -18,7 +18,6 @@ const ShopGrid = () => {
     const [isOnline, setIsOnline] = useState(false); 
 
     useEffect(() => {
-
         setIsOnline(navigator.onLine);
 
         const handleOnlineStatusChange = () => {
