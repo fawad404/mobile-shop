@@ -1,16 +1,16 @@
+'use client'
 import { React, useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Input } from '@/app/Components/ui/input' // Fixed import path for Input
 import { X } from 'lucide-react'
-import { useRouter } from 'next/navigation' // Changed to Next.js router
 import { toast } from 'react-toastify' // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css' 
+import Link from 'next/link' // Import Link from next/link
 
 const Login = ({ show, setShow, setUser }) => {
   const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false) // Add loading state
   const modalRef = useRef(null)
-  const router = useRouter() // Changed to use Next.js router
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -26,7 +26,6 @@ const Login = ({ show, setShow, setUser }) => {
 
   const handleJoinNow = () => {
     setShow(false)
-    router.push('/signup') // Changed to Next.js navigation
   }
 
   const handleLogin = async (event) => {
@@ -109,12 +108,14 @@ const Login = ({ show, setShow, setUser }) => {
               <div className="mt-6 text-center">
                 <p className="text-sm text-orange-700">
                   Not a member yet?
-                  <button
-                    onClick={handleJoinNow} // Call handleJoinNow on click
-                    className="ml-1 font-semibold text-orange-600 hover:text-orange-800 transition-colors"
-                  >
-                    Join now
-                  </button>
+                  <Link href="/signup">
+                    <a
+                      onClick={() => setShow(false)} // Close modal on click
+                      className="ml-1 font-semibold text-orange-600 hover:text-orange-800 transition-colors"
+                    >
+                      Join now
+                    </a>
+                  </Link>
                 </p>
               </div>
             </div>

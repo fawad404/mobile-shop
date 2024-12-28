@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import PaginationControls from "@/app/Components/PaginationControls/PaginationControls";
 import Sidebar from "../SideBar/sidebar";
 import { useRouter } from 'next/navigation';
@@ -335,18 +335,18 @@ const ShopGrid = () => {
                     )}
                 </div>
                 <div className="mt-4 sm:mt-8">
-                    
-                    <PaginationControls
-                        totalPages={totalPages}
-                        currentPage={currentPage}
-                        perPage={perPage}
-                        onNext={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                        onPrevious={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                        onPageChange={handlePageChange}
-                        onLimitChange={handleLimitChange}
-                        options={options}
-                    />
-
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <PaginationControls
+                            totalPages={totalPages}
+                            currentPage={currentPage}
+                            perPage={perPage}
+                            onNext={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                            onPrevious={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                            onPageChange={handlePageChange}
+                            onLimitChange={handleLimitChange}
+                            options={options}
+                        />
+                    </Suspense>
                 </div>
             </div>
         </div>
