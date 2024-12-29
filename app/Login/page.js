@@ -1,16 +1,19 @@
 'use client'
 import { React, useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Input } from '@/app/Components/ui/input' // Fixed import path for Input
+import { Input } from '@/app/Components/ui/input'
 import { X } from 'lucide-react'
-import { toast } from 'react-toastify' // Import react-toastify
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css' 
-import Link from 'next/link' // Import Link from next/link
+import Link from 'next/link'
+import { useDispatch } from 'react-redux';
+import { setAuthUser } from '@/app/authUserSlice'; // Import setAuthUser action
 
-const Login = ({ show, setShow, setUser }) => {
+const Login = ({ show, setShow }) => {
   const [isLogin, setIsLogin] = useState(true)
-  const [loading, setLoading] = useState(false) // Add loading state
+  const [loading, setLoading] = useState(false) 
   const modalRef = useRef(null)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -48,15 +51,18 @@ const Login = ({ show, setShow, setUser }) => {
       }
 
       const user = await response.json();
-      console.log(user);
-      setUser(user); // Set the user state
-      toast.success('Login successful!'); // Show success toast
-      setShow(false); // Close the modal
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+      // Dispatch and store in localStorage (now handled by the reducer)
+      dispatch(setAuthUser({ user, cart: storedCart }));
+      
+      toast.success('Login successful!');
+      setShow(false);
     } catch (error) {
       console.error('There was a problem with the login request:', error);
-      toast.error('Login failed!'); // Show error toast
+      toast.error('Login failed!'); 
     } finally {
-      setLoading(false); // Set loading to false
+      setLoading(false);
     }
   };
 
@@ -70,7 +76,7 @@ const Login = ({ show, setShow, setUser }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="w-full max-w-md bg-gradient-to-br from-orange-100 to-orange-50 rounded-2xl shadow-2xl overflow-hidden"
+            className="w-full max-w-md bg-gradient-to-br from-transparent to-slate-400 rounded-2xl shadow-2xl overflow-hidden"
           >
             <div className="relative p-8">
               <button
@@ -109,12 +115,12 @@ const Login = ({ show, setShow, setUser }) => {
                 <p className="text-sm text-orange-700">
                   Not a member yet?
                   <Link href="/signup">
-                    <a
+                    <span
                       onClick={() => setShow(false)} // Close modal on click
                       className="ml-1 font-semibold text-orange-600 hover:text-orange-800 transition-colors"
                     >
                       Join now
-                    </a>
+                    </span>
                   </Link>
                 </p>
               </div>

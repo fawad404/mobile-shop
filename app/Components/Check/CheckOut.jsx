@@ -6,32 +6,25 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Switch } from '../ui/switch';
-
-const products = [
-  { id: 1, name: 'Premium Headphones', price: 199.99, image: '/placeholder.svg?height=80&width=80' },
-  { id: 2, name: 'Wireless Mouse', price: 49.99, image: '/placeholder.svg?height=80&width=80' },
-  { id: 3, name: 'Mechanical Keyboard', price: 129.99, image: '/placeholder.svg?height=80&width=80' },
-];
+import { useSelector, useDispatch } from 'react-redux';
+import { updateCart } from '@/app/authUserSlice'; // Import updateCart action
 
 const Checkout = () => {
-  const [cart, setCart] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
+  const cart = useSelector((state) => state.authUser.cart); // Get cart from Redux store
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
     console.log('Retrieved cart from localStorage:', storedCart); // Log the retrieved cart
-    setCart(storedCart);
-  }, []);
+    dispatch(updateCart(storedCart)); // Update cart in Redux store
+  }, [dispatch]);
 
   const removeItem = (id) => {
-    const updatedCart = [...cart];
-    const index = updatedCart.findIndex(item => item.id === id);
-    if (index !== -1) {
-      updatedCart.splice(index, 1);
-      setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-      window.dispatchEvent(new Event('storage')); // Trigger the storage event
-    }
+    const updatedCart = cart.filter(item => item.id !== id);
+    dispatch(updateCart(updatedCart)); // Update cart in Redux store
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('storage')); // Trigger the storage event
   };
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);

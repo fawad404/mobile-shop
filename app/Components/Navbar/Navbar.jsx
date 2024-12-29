@@ -9,8 +9,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/app/Components/ui/button'
 import logo from '@/public/assets/Images/logo.png'
 import Login from '@/app/Login/page' 
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify' // Add toast import
 import 'react-toastify/dist/ReactToastify.css'
+import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
+import { clearAuthUser } from '@/app/authUserSlice'; // Import clearAuthUser
 
 const navItems = [
   { path: "/", label: "Home" },
@@ -30,8 +32,9 @@ const Navbar = () => {
   const pathname = usePathname()
   const dropdownRef = useRef(null)
   const [loginModal, setLoginModal] = useState(false);
-  const [user, setUser] = useState(null); // Add user state
-
+  const dispatch = useDispatch(); // Initialize useDispatch
+  const authUser = useSelector((state) => state.authUser.user); // Update this line to get user directly
+  console.log('Auth user', authUser); // Log the authUser 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -64,6 +67,17 @@ const Navbar = () => {
   const handleToggle = () => {
     setMenuOpen(!menuOpen)
   }
+
+  const handleLogout = () => {
+    try {
+      dispatch(clearAuthUser());
+      toast.success('Logged out successfully!');
+      router.push('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Error logging out. Please try again.');
+    }
+  };
 
   const isActive = (path) => pathname === path
 
@@ -121,11 +135,18 @@ const Navbar = () => {
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                      {user ? (
+                      {authUser ? (
                         <>
+                          <span className="block px-4 py-2 text-sm text-gray-700">Hello, {authUser.name}</span>
                           <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</Link>
                           <Link href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</Link>
-                          <Link href="/signout" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</Link>
+                          <button 
+                            onClick={handleLogout}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" 
+                            role="menuitem"
+                          >
+                            Sign out
+                          </button>
                         </>
                       ) : (
                         <>
@@ -209,8 +230,17 @@ const Navbar = () => {
                       <User className="h-10 w-10 rounded-full text-gray-800" />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">User Name</div>
-                      <div className="text-sm font-medium text-gray-500">user@example.com</div>
+                      {authUser ? (
+                        <>
+                          <div className="text-base font-medium text-gray-800">Hello, {authUser.name}</div>
+                          <div className="text-sm font-medium text-gray-500">{authUser.email}</div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="text-base font-medium text-gray-800">User Name</div>
+                          <div className="text-sm font-medium text-gray-500">user@example.com</div>
+                        </>
+                      )}
                     </div>
                     <Button variant="ghost" size="icon" className="ml-auto">
                       <ShoppingCart className="h-6 w-6 text-gray-800" aria-hidden="true" />
@@ -225,9 +255,12 @@ const Navbar = () => {
                     <Link href="/settings" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
                       Settings
                     </Link>
-                    <Link href="/signout" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                    <button 
+                      onClick={handleLogout}
+                      className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                    >
                       Sign out
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -236,7 +269,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </header>
-      <Login show={loginModal} setShow={setLoginModal} setUser={setUser} />
+      <Login show={loginModal} setShow={setLoginModal} />
       <ToastContainer /> {/* Add ToastContainer */}
     </>
   )
