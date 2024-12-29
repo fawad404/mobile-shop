@@ -1,7 +1,7 @@
 import React from 'react';
-import AboutPage from '@/app/Components/AboutSec/Aboutsec';
 import Navbar from '@/app/Components/Navbar/Navbar';
 import FAQSection from '@/app/Components/Faqs/Faqs';
+import AboutPage from '../Components/AboutSec/AboutSec';
 
 const About = () => {
   return (

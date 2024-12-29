@@ -15,7 +15,24 @@ const ShopGrid = () => {
     const [priceRange, setPriceRange] = useState([0, 1550]);
     const [category, setCategory] = useState([]);
     const [clearAll, setClearAll] = useState(false);
-    const [isOnline, setIsOnline] = useState(navigator.onLine);
+    const [isOnline, setIsOnline] = useState(false); 
+
+    useEffect(() => {
+        setIsOnline(navigator.onLine);
+
+        const handleOnlineStatusChange = () => {
+            setIsOnline(navigator.onLine);
+        };
+
+        window.addEventListener('online', handleOnlineStatusChange);
+        window.addEventListener('offline', handleOnlineStatusChange);
+
+        return () => {
+            window.removeEventListener('online', handleOnlineStatusChange);
+            window.removeEventListener('offline', handleOnlineStatusChange);
+        };
+    }, []);
+
     const [tempSearch, setTempSearch] = useState('');
     const [loading, setLoading] = useState(true);
     const options = [4, 8, 12, 16, 20];

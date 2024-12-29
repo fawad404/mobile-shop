@@ -4,7 +4,7 @@ import ShopGrid from "@/app/Components/ShopGrid/ShopGrid";
 import Navbar from "@/app/Components/Navbar/Navbar";
 
 
-const ShopPage = () => {
+const Page = () => {
   return (
     <div>
       <div className="flex mt-16">
@@ -15,4 +15,4 @@ const ShopPage = () => {
   );
 };
 
-export default ShopPage;
+export default Page;
