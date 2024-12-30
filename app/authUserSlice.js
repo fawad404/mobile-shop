@@ -1,17 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Get initial state from localStorage
-const getInitialState = () => {
-  if (typeof window !== 'undefined') {
-    const storedUser = localStorage.getItem('authUser');
-    const storedCart = localStorage.getItem('cart');
-    return {
-      user: storedUser ? JSON.parse(storedUser) : null,
-      cart: storedCart ? JSON.parse(storedCart) : [],
-    };
-  }
-  return { user: null, cart: [] };
-};
+const getInitialState = () => ({
+  user: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('authUser') || 'null') : null,
+  cart: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('cart') || '[]').map(item => ({
+    ...item,
+    quantity: item.quantity || 1
+  })) : [],
+});
 
 const authUserSlice = createSlice({
   name: 'authUser',

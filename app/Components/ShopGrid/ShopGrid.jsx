@@ -337,7 +337,7 @@ const ShopGrid = () => {
                                 onClick={() => handleProductClick(product.id)}
                             >
                                 <div>
-                                    <img src="../../palceholder.png" alt={product.title} className="w-full h-32 sm:h-48 object-cover mb-2 sm:mb-4 rounded-md" />
+                                    <img src={product.image} alt={product.title} className="w-full h-32 sm:h-48 object-cover mb-2 sm:mb-4 rounded-md" />
                                     <h3 className="font-medium text-sm sm:text-base text-gray-800 line-clamp-2 hover:text-[#ff6600] transition-colors">{product.title}</h3>
                                     <p className="text-base sm:text-lg font-bold font-mono mt-1">${product.price}</p>
                                 </div>

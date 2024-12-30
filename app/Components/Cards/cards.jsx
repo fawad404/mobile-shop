@@ -1,7 +1,7 @@
 'use client'
 import { Truck, CheckCircle, Headphones, CreditCard } from 'lucide-react'
 import {Card , CardContent} from '../ui/card'
-
+import {motion} from 'framer-motion'
 const features = [
   {
     icon: Truck,
@@ -60,22 +60,32 @@ export default function FeaturesSection() {
   return (
     <div className="space-y-12 py-12 px-4 md:px-6">
       {/* Features */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 place-items-start max-w-7xl mx-auto"
+      >
         {features.map((feature, index) => {
           const Icon = feature.icon
           return (
-            <div key={index} className="flex items-center gap-4">
-              <div className="p-2 rounded-full bg-amber-100">
-                <Icon className="w-6 h-6 text-amber-500" />
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.05 }}
+              className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-all duration-300"
+            >
+              <div className="p-3 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 shadow-lg">
+                <Icon className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <h3 className="font-semibold text-lg text-gray-800">{feature.title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{feature.description}</p>
               </div>
-            </div>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
 
       {/* Service Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 palce-items-center">
