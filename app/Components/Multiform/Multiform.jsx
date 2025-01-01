@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card } from '../../Components/ui/card'
 import { Button } from '../../Components/ui/button'
-import { Tablet, Smartphone, Clock, Settings, Check, ChevronLeft, ChevronRight, Laptop } from 'lucide-react'
+import { Tablet, Smartphone, Clock, Settings, Check, ChevronLeft, ChevronRight, Laptop ,Send } from 'lucide-react'
 
 export default function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -268,10 +268,14 @@ export default function MultiStepForm() {
                   onChange={(e) => setFormData(prev => ({ ...prev, details: e.target.value }))}
                   value={formData.details}
                 />
-                <Button onClick={handleSubmit} className="w-full text-lg py-6 transition-all duration-300 transform hover:scale-105">
-                  Submit Request
-                  <Check className="ml-2" size={24} />
-                </Button>
+               <Button 
+                type="submit" 
+                onClick={handleSubmit}
+                className="w-full py-4 bg-orange-500 text-white hover:bg-orange-600 transform hover:scale-[1.02] transition-all duration-200"
+              >
+                Send Message
+                <Send className="ml-2" size={16} />
+              </Button>
               </div>
               {renderCheckmark(formData.details)}
             </Card>
@@ -340,11 +344,26 @@ export default function MultiStepForm() {
 
       <div className="mb-12">
         <h2 className="text-3xl font-bold mb-6 text-center">
-          {currentStep === 2 ? (
-            <span>Please Choose Device <span className="text-primary">Manufacturer</span></span>
-          ) : (
-            `Step ${currentStep}: ${steps[currentStep - 1]}`
-          )}
+          {(() => {
+            switch (currentStep) {
+              case 1:
+                return <span>Choose Your Device <span className="text-primary">Category</span></span>
+              case 2:
+                return <span>Please Choose Device <span className="text-primary">Manufacturer</span></span>
+              case 3:
+                return <span>Select Your Device <span className="text-primary">Model</span></span>
+              case 4:
+                return <span>What's The <span className="text-primary">Problem</span>?</span>
+              case 5:
+                return <span>Choose Repair <span className="text-primary">Type</span></span>
+              case 6:
+                return <span>Select Preferred <span className="text-primary">Date & Time</span></span>
+              case 7:
+                return <span>Additional <span className="text-primary">Details</span></span>
+              default:
+                return `Step ${currentStep}: ${steps[currentStep - 1].title}`
+            }
+          })()}
         </h2>
         {renderStep()}
       </div>

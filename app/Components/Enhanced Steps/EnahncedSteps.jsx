@@ -1,19 +1,19 @@
 'use client'
 import React from 'react';
-import { FileText, CheckCircle, ArrowRight } from 'lucide-react'; // Importing LucideReact icons
+import { FileText, CheckCircle, ArrowRight } from 'lucide-react';
 
 const steps = [
   {
     id: 1,
     title: "Plan Your Goals",
     description: "Outline your project objectives and set clear, actionable goals to achieve success.",
-    icon: <FileText size={48} className="text-blue-500" />,
+    icon: <FileText size={48} className="text-orange-500" />,
   },
   {
     id: 2,
     title: "Design the Strategy",
     description: "Craft a personalized approach to streamline your workflow with modern tools.",
-    icon: <CheckCircle size={48} className="text-green-500" />,
+    icon: <CheckCircle size={48} className="text-orange-500" />,
   },
   {
     id: 3,
@@ -32,14 +32,14 @@ const EnhancedSteps = () => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 800 600"
       >
-        <g fill="#00bcd4" opacity="0.1">
+        <g fill="#ff9800" opacity="0.1">
           <circle cx="200" cy="200" r="200" />
           <circle cx="600" cy="400" r="300" />
         </g>
       </svg>
 
       <div className="container mx-auto px-6 lg:px-20">
-        <h2 className="text-3xl lg:text-5xl font-bold text-gray-800 mb-12 text-center">
+        <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-12 text-center">
           How It Works
         </h2>
 
@@ -47,10 +47,10 @@ const EnhancedSteps = () => {
           {steps.map((step) => (
             <div
               key={step.id}
-              className="bg-white shadow-lg rounded-lg p-8 relative group hover:bg-gradient-to-br hover:from-blue-500 hover:to-purple-500 hover:text-white transition-all"
+              className="bg-white shadow-lg rounded-lg p-8 relative group hover:bg-gradient-to-br hover:from-orange-500 hover:to-black transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
             >
               {/* Icon */}
-              <div className="flex justify-center items-center mb-6">
+              <div className="flex justify-center items-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 {step.icon}
               </div>
               {/* Title */}
@@ -62,7 +62,7 @@ const EnhancedSteps = () => {
                 {step.description}
               </p>
               {/* Hover Effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gray-900 rounded-lg transition-all"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-orange-500 rounded-lg transition-all"></div>
             </div>
           ))}
         </div>
@@ -74,7 +74,7 @@ const EnhancedSteps = () => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
       >
-        <polygon points="50,0 100,100 0,100" fill="#4caf50" />
+        <polygon points="50,0 100,100 0,100" fill="#ff9800" />
       </svg>
     </section>
   );

@@ -33,46 +33,74 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <div className="bg-gradient-to-br from-black via-gray-800 to-orange-700 min-h-[90vh] relative overflow-hidden rounded-b-[3rem] shadow-2xl">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cGF0aCBkPSJNMCAwTDUgNVpNNSAwTDAgNVoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9IjAuMiIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KPC9zdmc+')] opacity-20" />
-        <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 py-16 md:py-24">
-          <div className="space-y-8 z-10">
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight animate-fadeIn">
-              Your One-Stop<br />Store For<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-black hover:from-black hover:to-orange-400 transition-all duration-300">
-                Mobile
-              </span>
-            </h1>
-            <p className="text-gray-200 max-w-md text-xl leading-relaxed">
-              Best deals on all types of Mobile phones, Accessories, Trade-Ins & Repairs
-            </p>
-            <Link href='/shop'>
-            <button className="group relative overflow-hidden bg-white text-black font-bold px-10 py-4 rounded-full text-lg transition-all duration-300 hover:text-white">
+      <div className="bg-gradient-to-br from-[#f3f4f6] via-[#9ca3af] to-[#4b5563] min-h-[85vh] relative overflow-hidden rounded-3xl  my-4 shadow-2xl">
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5"></div>
+          
+          <div className="flex flex-col md:flex-row items-center justify-between max-w-screen-2xl mx-auto px-6 py-12 md:py-16 lg:py-20 mt-16">
+            {/* Text Content */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6 md:space-y-8 z-10 md:flex-1"
+            >
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black tracking-tight">
+                Your One-Stop<br />Store For<br />
+                <span className="text-orange-500 hover:text-orange-400 transition-colors duration-300 relative">
+                  Mobile
+                  <span className="absolute bottom-0 left-0 w-full h-1 bg-orange-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                </span>
+              </h1>
+              
+              <p className="text-gray-700 max-w-md text-base sm:text-lg md:text-xl leading-relaxed">
+                Best deals on all types of Mobile phones, Mobile Accessories, Mobile Trade In & Mobile Repair
+              </p>
+              
+             <Link href='/shop'>
+            <button className="group relative overflow-hidden mt-4 bg-white text-black font-bold px-10 py-4 rounded-full text-lg transition-all duration-300 hover:text-white">
               <span className="relative z-10">Shop Now!</span>
-              <div className="absolute inset-0 h-full w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-full bg-gradient-to-r from-orange-500 to-black origin-left"></div>
+              <div className="absolute inset-0 h-full w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-full bg-orange-500 to-black origin-left"></div>
             </button>
             </Link>
-          </div>
-          
-          <div className="relative mt-12 md:mt-0">
-            <div className="relative w-[350px] h-[350px] md:w-[500px] md:h-[500px] animate-float">
-            <motion.div 
-              className="relative w-[350px] h-[350px] md:w-[500px] md:h-[500px]"
-              animate={{ y: [0, -20, 0] }}
-              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-            >
-              <Image
-                              src={headerIphone}
-                              alt="iPhone front view"
-                              width={6000}
-                              height={6000}
-                              className="absolute top-0 right-0 w-auto transform rotate-12 z-20 hover:scale-105 transition-transform duration-300"
-                            />
             </motion.div>
-            </div>
+    
+            {/* Image Content */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative mt-12 md:mt-0 md:flex-1"
+            >
+              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px] lg:w-[500px] lg:h-[500px] mx-auto md:mt-16">
+                <motion.div 
+                  animate={{ 
+                    y: [0, -20, 0],
+                    rotate: [0, 5, 0]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 6,
+                    ease: "easeInOut"
+                  }}
+                  className="relative w-full h-full"
+                >
+                  <Image
+                    src={headerIphone}
+                    alt="iPhone front view"
+                    fill
+                    priority
+                    className="object-contain transform hover:scale-105 transition-transform duration-300 filter drop-shadow-2xl"
+                    style={{ objectFit: 'contain' }}
+                  />
+                </motion.div>
+                
+                {/* Decorative Elements */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/20 to-pink-500/20 blur-3xl opacity-30 rounded-full"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-orange-500/30 rounded-full blur-3xl"></div>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
 
       <main className="container mx-auto px-4 py-16">
         {/* Features Section */}
@@ -118,7 +146,7 @@ const AboutPage = () => {
             Join millions of satisfied customers and discover why NextGen Mobile is the leader in mobile innovation.
           </p>
           <Link href='/shop'>
-          <button className="bg-gradient-to-r from-black to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-orange-600 hover:to-black transition-all duration-300 group shadow-lg hover:shadow-xl">
+          <button className=" bg-orange-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-orange-600  transition-all duration-300 group shadow-lg hover:shadow-xl hover:scale-95">
              Explore Our Products
             <ArrowRight className="inline-block ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>

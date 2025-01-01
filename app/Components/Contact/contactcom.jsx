@@ -123,7 +123,7 @@ export default function ContactPage() {
               </div>
               <Button 
                 type="submit" 
-                className="w-full py-4 bg-gradient-to-r from-orange-600 to-black text-white hover:from-orange-700 hover:to-black transform hover:scale-[1.02] transition-all duration-200"
+                className="w-full py-4 bg-orange-500 text-white hover:bg-orange-600 transform hover:scale-[1.02] transition-all duration-200"
               >
                 Send Message
                 <Send className="ml-2" size={16} />

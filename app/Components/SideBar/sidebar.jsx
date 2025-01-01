@@ -46,14 +46,14 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
   );
 
   return (
-    <div className="w-full lg:w-1/3 xl:w-1/4 bg-gradient-to-b from-white to-blue-50 border-r shadow-lg">
+    <div className="w-full lg:w-1/3 xl:w-1/4 backdrop-blur-md bg-white/30 border-r border-white/40">
       {/* Mobile Toggle */}
       <button 
-        className="lg:hidden w-full px-6 py-3 text-white bg-gradient-to-r from-orange-400 to-black flex items-center justify-between mt-16"
+        className="lg:hidden w-full px-6 py-4 text-white bg-orange-500 flex items-center justify-between mt-16 shadow-lg transform transition-transform hover:scale-[0.99] active:scale-[0.97]"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="text-lg font-semibold flex items-center">
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 mr-2 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
           </svg>
           Filters
@@ -69,63 +69,68 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
       </button>
 
       {/* Sidebar Content */}
-      <div className={`${isOpen ? 'block' : 'hidden'} lg:block p-6 overflow-y-auto max-h-[calc(100vh-4rem)] custom-scrollbar`}>
+      <div className={`${isOpen ? 'block' : 'hidden'} lg:block p-8 overflow-y-auto max-h-[calc(100vh-4rem)] custom-scrollbar bg-[url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E")]`}>
         {/* Decorative Header */}
-        <div className="mb-8 relative">
-          <div className="absolute top-0 right-0 w-20 h-20 opacity-10">
+        <div className="mb-10 relative">
+          <div className="absolute -top-4 -right-4 w-24 h-24 opacity-10 animate-pulse">
             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="8" className="text-orange-500" />
               <path d="M50 10V90M10 50H90" stroke="currentColor" strokeWidth="8" className="text-orange-500" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Smart Filters</h2>
-          <p className="text-sm text-gray-500 italic">Refine your shopping experience</p>
+          <h2 className="text-3xl font-bold bg-gray-800 bg-clip-text text-transparent mb-3">
+            Smart Filters
+          </h2>
+          <p className="text-sm text-gray-600 font-medium">Refine your shopping experience</p>
         </div>
 
         {/* Price Range with Label */}
-        <div className="mb-8">
+        <div className="mb-10">
           <div className="flex items-center mb-4">
-            <DollarSign className="w-7 h-7 text-orange-500 mr-2" />
-            <h3 className="font-semibold text-lg">Price Range</h3>
+            <DollarSign className="w-7 h-7 text-orange-500 mr-2 animate-bounce-slow" />
+            <h3 className="font-bold text-xl bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+              Price Range
+            </h3>
           </div>
-          <div className="bg-white p-6 rounded-lg border border-blue-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="bg-white/60 px-6 py-8 rounded-2xl border border-white/60 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm">
             <RangeSlider onPriceRangeChange={onPriceRangeChange} />
           </div>
         </div>
 
-
         {/* Product Categories */}
-        <div className="mb-8 ">
-          <div className="flex items-center mb-4">
+        <div className="mb-8">
+          <div className="flex items-center mb-6">
             <svg className="w-7 h-7 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
-            <h3 className="font-semibold text-lg">Product Categories</h3>
+            <h3 className="font-bold text-xl bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+              Brand Categories
+            </h3>
           </div>
-          <div className="bg-white p-4 rounded-lg border border-blue-100 shadow-sm">
-            <div className="flex items-center mb-4">
-              <input
-                type="search"
-                placeholder="Search categories..."
-                value={categorySearch}
-                onChange={(e) => setCategorySearch(e.target.value)}
-                className="w-full px-3 py-2 border border-blue-200 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <ul className="space-y-2 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
+          <div className="bg-white/60 p-6 rounded-2xl border border-white/60 shadow-lg backdrop-blur-sm">
+            <input
+              type="search"
+              placeholder="Search Brands ..."
+              value={categorySearch}
+              onChange={(e) => setCategorySearch(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm mb-6"
+            />
+            <ul className="space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
               {categories.map((category, index) => (
-                <li key={index} className="group">
-                  <label className="flex items-center justify-between p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all cursor-pointer border border-transparent hover:border-blue-200">
+                <li key={index} className="group transform transition-all duration-300 hover:-translate-y-1">
+                  <label className="flex items-center justify-between p-4 rounded-xl cursor-pointer border border-transparent hover:border-purple-200 bg-gradient-to-r from-white/40 to-white/60 hover:from-white/60 hover:to-white/80 backdrop-blur-sm transition-all">
                     <div className="flex items-center">
                       <input
                         type="checkbox"
-                        className="w-5 h-5 text-blue-600 border-blue-300 rounded focus:ring-blue-500"
+                        className="w-5 h-5 text-purple-600 border-purple-300 rounded-lg focus:ring-purple-500 transition-all duration-300"
                         checked={checkedCategories.includes(category)}
                         onChange={() => handleCategoryChange(category)}
                       />
-                      <span className="ml-3 text-sm font-medium text-gray-700">{category}</span>
+                      <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                        {category}
+                      </span>
                     </div>
-                    <span className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
