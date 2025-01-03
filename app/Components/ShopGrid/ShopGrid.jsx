@@ -12,10 +12,10 @@ const ShopGrid = () => {
     const [perPage, setPerPage] = useState(20);
     const [sort, setSort] = useState('latest');
     const [searchQuery, setSearchQuery] = useState('');
-    const [priceRange, setPriceRange] = useState([0, 1550]);
-    const [category, setCategory] = useState([]);
+    const [priceRange, setPriceRange] = useState([0, 15000]);
+    const [brand, setBrand] = useState([]);
     const [clearAll, setClearAll] = useState(false);
-    const [isOnline, setIsOnline] = useState(false); 
+    const [isOnline, setIsOnline] = useState(false);
 
     useEffect(() => {
         setIsOnline(navigator.onLine);
@@ -54,18 +54,18 @@ const ShopGrid = () => {
         setPriceRange(range);
         setCurrentPage(1);
     };
-    const handleCategoryChange = (selectedCategories) => {
-        setCategory(selectedCategories);
+    const handleBrandChange = (selectedBrands) => {
+        setBrand(selectedBrands);
         setCurrentPage(1);
     };
 
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const response = await fetch("https://fakestoreapi.com/products/");
+            const response = await fetch("https://phone-cloud-plus-backend.vercel.app/api/v1/products");
             const data = await response.json();
-            setProducts(data);
-            console.log(data);
+            setProducts(data.getAllProducts);
+            console.log(data.getAllProducts);
         } catch (error) {
             console.error("Failed to fetch products:", error);
         } finally {
@@ -124,8 +124,8 @@ const ShopGrid = () => {
     const handleClearAll = () => {
         setSearchQuery('');
         setSort('latest');
-        setPriceRange([0, 1550]);
-        setCategory([]);
+        setPriceRange([0, 15000]);
+        setBrand([]);
         setClearAll(true);
         setCurrentPage(1);
     };
@@ -139,10 +139,10 @@ const ShopGrid = () => {
                 setSort('latest');
                 break;
             case 'price':
-                setPriceRange([0, 1550]);
+                setPriceRange([0, 15000]);
                 break;
-            case 'category':
-                setCategory([]);
+            case 'brand':
+                setBrand([]);
                 break;
             default:
                 break;
@@ -151,7 +151,7 @@ const ShopGrid = () => {
     };
 
     const handleSearchSubmit = (e) => {
-        e?.preventDefault(); // Optional chaining for when called directly
+        e?.preventDefault();
         setSearchQuery(tempSearch);
         setCurrentPage(1);
     };
@@ -165,18 +165,18 @@ const ShopGrid = () => {
         }
     };
 
-    const isFilterApplied = searchQuery || sort !== 'latest' || priceRange[0] !== 0 || priceRange[1] !== 1550 || category.length > 0;
+    const isFilterApplied = searchQuery || sort !== 'latest' || priceRange[0] !== 0 || priceRange[1] !== 15000 || brand.length > 0;
 
     const filteredProducts = products.filter(product =>
         product.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
         product.price >= priceRange[0] && product.price <= priceRange[1] &&
-        (category.length > 0 ? category.includes(product.category) : true)
+        (brand.length > 0 ? brand.includes(product.brand) : true)
     );
 
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         switch (sort) {
             case 'popularity':
-                return b.rating.count - a.rating.count;
+                return b.ratingCount - a.ratingCount;
             case 'price-low-high':
                 return a.price - b.price;
             case 'price-high-low':
@@ -220,10 +220,9 @@ const ShopGrid = () => {
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen w-screen">
-            <Sidebar onPriceRangeChange={handlePriceRangeChange} onCategoryChange={handleCategoryChange} clearAll={clearAll} />
+            <Sidebar onPriceRangeChange={handlePriceRangeChange} onBrandChange={handleBrandChange} clearAll={clearAll} />
             <div className="w-full lg:w-3/4 p-2 sm:p-4">
                 <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row justify-between items-start lg:items-center py-2 sm:py-4 border-b border-gray-300">
-                    {/* Left Section */}
                     <div className="w-full lg:w-auto space-y-2 sm:space-y-3">
                         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black">Shop</h1>
                         {isFilterApplied && (
@@ -254,7 +253,7 @@ const ShopGrid = () => {
                                     />
                                 )}
 
-                                {(priceRange[0] !== 0 || priceRange[1] !== 1550) && (
+                                {(priceRange[0] !== 0 || priceRange[1] !== 15000) && (
                                     <FilterTag
                                         icon={DollarSign}
                                         label="Price"
@@ -263,12 +262,12 @@ const ShopGrid = () => {
                                     />
                                 )}
 
-                                {category.length > 0 && (
+                                {brand.length > 0 && (
                                     <FilterTag
                                         icon={Tag}
-                                        label="Categories"
-                                        value={category.join(', ')}
-                                        onRemove={() => handleRemoveFilter('category')}
+                                        label="Brands"
+                                        value={brand.join(', ')}
+                                        onRemove={() => handleRemoveFilter('brand')}
                                     />
                                 )}
                             </div>
@@ -280,7 +279,6 @@ const ShopGrid = () => {
                         </p>
                         </div>
                     </div>
-                    {/* Right Section */}
                     <div className="flex flex-col sm:flex-row w-full lg:w-auto space-y-2 sm:space-y-0 sm:space-x-3 mt-4 lg:mt-0">
                         <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-64">
                             <input
@@ -334,10 +332,10 @@ const ShopGrid = () => {
                             <div
                                 key={index}
                                 className="flex flex-col justify-between p-2 sm:p-4 border rounded-md shadow-sm hover:shadow-lg transition cursor-pointer h-full bg-white"
-                                onClick={() => handleProductClick(product.id)}
+                                onClick={() => handleProductClick(product._id)}
                             >
                                 <div>
-                                    <img src={product.image} alt={product.title} className="w-full h-32 sm:h-48 object-cover mb-2 sm:mb-4 rounded-md" />
+                                    <img src={product.imgCover} alt={product.title} className="w-full h-32 sm:h-48 object-cover mb-2 sm:mb-4 rounded-md" />
                                     <h3 className="font-medium text-sm sm:text-base text-gray-800 line-clamp-2 hover:text-[#ff6600] transition-colors">{product.title}</h3>
                                     <p className="text-base sm:text-lg font-bold font-mono mt-1">${product.price}</p>
                                 </div>

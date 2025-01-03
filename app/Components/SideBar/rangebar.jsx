@@ -4,7 +4,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 
 const RangeSlider = ({ onPriceRangeChange }) => {
   const [values, setValues] = useState([50, 877]);
-  const max = 1550;
+  const max = 15000;
 
   const handleValueChange = (newValues) => {
     setValues(newValues);

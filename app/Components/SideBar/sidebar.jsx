@@ -1,54 +1,66 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from "react";
 import RangeSlider from "./rangebar";
-import { DollarSign  } from "lucide-react";
+import { DollarSign } from "lucide-react";
 
-const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
-  const [checkedCategories, setCheckedCategories] = useState([]);
+const Sidebar = ({ onPriceRangeChange, onBrandChange, clearAll }) => {
+  const [checkedBrands, setCheckedBrands] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [filterSearch, setFilterSearch] = useState('');
-  const [categorySearch, setCategorySearch] = useState('');
+  const [brandSearch, setBrandSearch] = useState('');
+  const [brand, setBrand] = useState([]); 
+  const [isLoading, setIsLoading] = useState(true);  // Add loading state
 
-  const handleCategoryChange = (category) => {
-    const updatedCategories = checkedCategories.includes(category)
-      ? checkedCategories.filter((item) => item !== category)
-      : [...checkedCategories, category];
-    setCheckedCategories(updatedCategories);
-    onCategoryChange(updatedCategories);
+  const handleBrandChange = (brandName) => {
+    const updatedBrands = checkedBrands.includes(brandName)
+      ? checkedBrands.filter((item) => item !== brandName)
+      : [...checkedBrands, brandName];
+    setCheckedBrands(updatedBrands);
+    onBrandChange(updatedBrands);
   };
 
   useEffect(() => {
     if (clearAll) {
-      setCheckedCategories([]);
+      setCheckedBrands([]);
       setFilterSearch('');
-      setCategorySearch('');
+      setBrandSearch('');
     }
   }, [clearAll]);
 
-  const categories = [
-    "Audio Accessories",
-    "Back Glass",
-    "Battery",
-    "Camera Lens Protector",
-    "Car Accessories",
-    "Cases",
-    "Charging Accessories",
-    "Computer/Laptop Accessories",
-    "Devices",
-    "Display Accessories",
-    "Headphones",
-    "men's clothing",
-    "jewelery",
-    "electronics",
-    "women's clothing"
-  ].filter(category => 
-    category.toLowerCase().includes(categorySearch.toLowerCase())
+  useEffect(() => {
+    const fetchBrands = async () => {
+      setIsLoading(true);  // Set loading to true before fetch
+      try {
+        const response = await fetch("https://phone-cloud-plus-backend.vercel.app/api/v1/brands");
+        if (!response.ok) {
+          throw new Error("Failed to fetch brands");
+        }
+
+        const data = await response.json();
+        console.log("brands", data.getAllBrands);
+
+        // Extract categories dynamically from getAllBrands array
+        const brandNames = data.getAllBrands.map((brand) => brand.name); // Assuming 'name' is the field
+        setBrand(brandNames);
+      } catch (error) {
+        console.error("Error fetching brands:", error);
+      } finally {
+        setIsLoading(false);  // Set loading to false after fetch
+      }
+    };
+
+    fetchBrands();
+  }, []);
+
+  // Filter brands based on search input
+  const filteredBrands = brand.filter(brandName =>
+    brandName.toLowerCase().includes(brandSearch.toLowerCase())
   );
 
   return (
-    <div className="w-full lg:w-1/3 xl:w-1/4 backdrop-blur-md bg-white/30 border-r border-white/40">
+    <div className="w-full lg:w-1/3 xl:w-1/4 backdrop-blur-md bg-white/30 border-r border-white/40 shadow-md">
       {/* Mobile Toggle */}
-      <button 
+      <button
         className="lg:hidden w-full px-6 py-4 text-white bg-orange-500 flex items-center justify-between mt-16 shadow-lg transform transition-transform hover:scale-[0.99] active:scale-[0.97]"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -58,20 +70,21 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
           </svg>
           Filters
         </span>
-        <svg 
+        <svg
           className={`w-6 h-6 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
 
-      {/* Sidebar Content */}
-      <div className={`${isOpen ? 'block' : 'hidden'} lg:block p-8 overflow-y-auto max-h-[calc(100vh-4rem)] custom-scrollbar bg-[url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E")]`}>
-        {/* Decorative Header */}
-        <div className="mb-10 relative">
+      {/* Sidebar Content */ }
+  <div className={`${isOpen ? 'block' : 'hidden'} lg:block p-8 overflow-y-auto max-h-[calc(100vh - 4rem)] custom - scrollbar bg-[url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E")]
+`}>
+  {/* Decorative Header */ }
+  < div className = "mb-10 relative" >
           <div className="absolute -top-4 -right-4 w-24 h-24 opacity-10 animate-pulse">
             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="8" className="text-orange-500" />
@@ -82,10 +95,10 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
             Smart Filters
           </h2>
           <p className="text-sm text-gray-600 font-medium">Refine your shopping experience</p>
-        </div>
+        </div >
 
-        {/* Price Range with Label */}
-        <div className="mb-10">
+  {/* Price Range with Label */ }
+  < div className = "mb-10" >
           <div className="flex items-center mb-4">
             <DollarSign className="w-7 h-7 text-orange-500 mr-2 animate-bounce-slow" />
             <h3 className="font-bold text-xl bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
@@ -95,10 +108,10 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
           <div className="bg-white/60 px-6 py-8 rounded-2xl border border-white/60 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm">
             <RangeSlider onPriceRangeChange={onPriceRangeChange} />
           </div>
-        </div>
+        </div >
 
-        {/* Product Categories */}
-        <div className="mb-8">
+  {/* Product Categories */ }
+  < div className = "mb-8" >
           <div className="flex items-center mb-6">
             <svg className="w-7 h-7 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -111,38 +124,48 @@ const Sidebar = ({ onPriceRangeChange, onCategoryChange, clearAll }) => {
             <input
               type="search"
               placeholder="Search Brands ..."
-              value={categorySearch}
-              onChange={(e) => setCategorySearch(e.target.value)}
+              value={brandSearch}
+              onChange={(e) => setBrandSearch(e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm mb-6"
             />
-            <ul className="space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
-              {categories.map((category, index) => (
-                <li key={index} className="group transform transition-all duration-300 hover:-translate-y-1">
-                  <label className="flex items-center justify-between p-4 rounded-xl cursor-pointer border border-transparent hover:border-purple-200 bg-gradient-to-r from-white/40 to-white/60 hover:from-white/60 hover:to-white/80 backdrop-blur-sm transition-all">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 text-purple-600 border-purple-300 rounded-lg focus:ring-purple-500 transition-all duration-300"
-                        checked={checkedCategories.includes(category)}
-                        onChange={() => handleCategoryChange(category)}
-                      />
-                      <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                        {category}
+            {isLoading ? (
+              <div className="flex justify-center items-center h-40">
+                <svg className="w-10 h-10 text-orange-500 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+              </div>
+            ) : (
+              <ul className="space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
+                {filteredBrands.map((brandName, index) => (
+                  <li key={index} className="group transform transition-all duration-300 hover:-translate-y-1">
+                    <label className="flex items-center justify-between p-4 rounded-xl cursor-pointer border border-transparent hover:border-purple-200 bg-gradient-to-r from-white/40 to-white/60 hover:from-white/60 hover:to-white/80 backdrop-blur-sm transition-all">
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          className="w-5 h-5 text-purple-600 border-purple-300 rounded-lg focus:ring-purple-500 transition-all duration-300"
+                          checked={checkedBrands.includes(brandName)}
+                          onChange={() => handleBrandChange(brandName)}
+                        />
+                        <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">
+                          {brandName}
+                        </span>
+                      </div>
+                      <span className="text-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
                       </span>
-                    </div>
-                    <span className="text-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
+  
   );
 };
 

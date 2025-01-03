@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, ArrowLeft, ShoppingCart, Heart, Check, Package, ShieldCheck, ArrowRight, 
          BadgeCheck, Clock, Truck, X, ShoppingBag } from 'lucide-react';
-import tempImg from '@/public/assets/Images/temp.png'
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {motion} from 'framer-motion'
@@ -33,18 +32,18 @@ const ProductDetail = ({id}) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+        const response = await fetch(`https://phone-cloud-plus-backend.vercel.app/api/v1/products/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const text = await response.text();
-  
-        const data = JSON.parse(text);
-        if (!data) {
+        const data = await response.json();
+        console.log('Product data:', data.getSpecificProduct);
+       
+        if (!data.getSpecificProduct) {
           throw new Error('Invalid data received');
         }
-        setProduct(data);
-        setSelectedImage(data.image);
+        setProduct(data.getSpecificProduct); // Update this line
+        setSelectedImage(data.getSpecificProduct.imgCover); // Update this line
       } catch (error) {
         console.error('Error fetching product:', error);
         setError(error.message);
@@ -65,11 +64,30 @@ const ProductDetail = ({id}) => {
 
   const addToCart = (product) => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    console.log('Current cart:', cart); // Log the current cart
-    cart.push(product);
-    console.log('Updated cart:', cart); // Log the updated cart
+    
+    // Create a cart item with necessary properties
+    const cartItem = {
+      id: product._id,
+      title: product.title,
+      price: product.price,
+      image: product.imgCover,
+      quantity: 1
+    };
+  
+    // Check if item already exists in cart
+    const existingItemIndex = cart.findIndex(item => item.id === cartItem.id);
+  
+    if (existingItemIndex !== -1) {
+      // If item exists, increment quantity
+      cart[existingItemIndex].quantity += 1;
+    } else {
+      // If item doesn't exist, add new item
+      cart.push(cartItem);
+    }
+  
+    console.log('Updated cart:', cart);
     localStorage.setItem('cart', JSON.stringify(cart));
-    window.dispatchEvent(new Event('storage')); // Trigger the storage event
+    window.dispatchEvent(new Event('storage'));
     setShowCheckoutOptions(true);
   };
 
@@ -100,13 +118,13 @@ const ProductDetail = ({id}) => {
             transition={{ duration: 0.5 }}
           >
             <img
-              src={selectedImage}
+              src={selectedImage || product.imgCover}
               alt={product.title}
               className="object-contain w-full h-full p-4 transition-transform duration-300 ease-in-out hover:scale-105"
             />
           </motion.div>
           <div className="grid grid-cols-4 gap-4">
-            {[product.image, tempImg, tempImg, tempImg].map((image, i) => (
+            {(product.images || [product.imgCover]).map((image, i) => (
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.05 }}
@@ -142,20 +160,20 @@ const ProductDetail = ({id}) => {
                 <Star
                   key={index}
                   className={`w-5 h-5 ${
-                    index < Math.round(product.rating.rate)
+                    index < Math.round(product.ratingAvg)
                       ? 'text-orange-500 fill-current'
                       : 'text-gray-300'
                   }`}
                 />
               ))}
             </div>
-            <span className="text-gray-600 font-medium">({product.rating.count} reviews)</span>
+            <span className="text-gray-600 font-medium">({product.ratingCount} reviews)</span>
           </div>
 
           {/* Price */}
           <div className="flex items-center space-x-4">
             <span className="text-3xl font-bold text-gray-900">
-              ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              ${product.price}
             </span>
             <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium">
               <Clock className="w-4 h-4 mr-1" />
@@ -243,7 +261,7 @@ const ProductDetail = ({id}) => {
 
             <div className="space-y-6">
               <div className="flex items-center space-x-4">
-                <img src={product.image} alt={product.title} className="w-20 h-20 object-contain rounded-lg bg-gray-100 p-2" />
+                <img src={product.imgCover} alt={product.title} className="w-20 h-20 object-contain rounded-lg bg-gray-100 p-2" />
                 <div>
                   <h3 className="font-medium text-gray-900">{product.title}</h3>
                   <p className="text-gray-600">${product.price}</p>
@@ -284,7 +302,7 @@ const ProductDetail = ({id}) => {
         <div className="flex flex-col md:flex-row gap-12">
           <div className="md:w-1/3">
             <div className="text-5xl font-bold text-black mb-2">
-              {product.rating.rate.toFixed(1)}
+              {product.ratingAvg}
               <span className="text-xl text-gray-500">/5</span>
             </div>
             <div className="flex mb-2">
@@ -292,17 +310,17 @@ const ProductDetail = ({id}) => {
                 <Star
                   key={index}
                   className={`w-6 h-6 ${
-                    index < Math.floor(product.rating.rate)
+                    index < Math.floor(product.ratingAvg) 
                       ? 'text-[#ff6600] fill-current'
                       : 'text-gray-300'
                   }`}
                 />
               ))}
             </div>
-            <div className="text-sm text-gray-500">Based on {product.rating.count} reviews</div>
+            <div className="text-sm text-gray-500">Based on {product.ratingCount} reviews</div>
           </div>
           <div className="md:w-2/3">
-            {calculateRatingPercentages(product.rating.rate, product.rating.count).map(({ stars, percentage }) => (
+            {calculateRatingPercentages(product.ratingCount, product.ratingCount).map(({ stars, percentage }) => (
               <div key={stars} className="flex items-center mb-3">
                 <div className="w-20 text-sm text-gray-600 font-medium">{stars} stars</div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 mx-3">
