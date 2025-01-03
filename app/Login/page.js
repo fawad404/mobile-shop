@@ -142,7 +142,7 @@ const Login = ({ show, setShow }) => {
               <div className="mt-6 text-center">
                 <p className="text-gray-600">
                   Not a member yet?{' '}
-                  <Link href="/signup">
+                  <Link href="/Sign-up">
                     <span
                       onClick={() => setShow(false)}
                       className="font-semibold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent hover:from-orange-700 hover:to-pink-700 transition-colors"

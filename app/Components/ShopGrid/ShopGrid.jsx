@@ -4,6 +4,7 @@ import PaginationControls from "@/app/Components/PaginationControls/PaginationCo
 import Sidebar from "../SideBar/sidebar";
 import { useRouter } from 'next/navigation';
 import { X, Search, SortAsc, DollarSign, Tag, Trash2, Eye } from 'lucide-react';
+import ProductCard from "../ProductCard/ProductCard";
 
 const ShopGrid = () => {
     const router = useRouter();
@@ -16,6 +17,7 @@ const ShopGrid = () => {
     const [brand, setBrand] = useState([]);
     const [clearAll, setClearAll] = useState(false);
     const [isOnline, setIsOnline] = useState(false);
+    const [searchLoading, setSearchLoading] = useState(false);
 
     useEffect(() => {
         setIsOnline(navigator.onLine);
@@ -55,8 +57,10 @@ const ShopGrid = () => {
         setCurrentPage(1);
     };
     const handleBrandChange = (selectedBrands) => {
+        setSearchLoading(true);
         setBrand(selectedBrands);
         setCurrentPage(1);
+        setTimeout(() => setSearchLoading(false), 500);
     };
 
     const fetchProducts = async () => {
@@ -152,16 +156,20 @@ const ShopGrid = () => {
 
     const handleSearchSubmit = (e) => {
         e?.preventDefault();
+        setSearchLoading(true);
         setSearchQuery(tempSearch);
         setCurrentPage(1);
+        setTimeout(() => setSearchLoading(false), 500);
     };
 
     const handleTempSearchChange = (e) => {
         const newValue = e.target.value;
         setTempSearch(newValue);
         if (newValue === '') {
+            setSearchLoading(true);
             setSearchQuery('');
             setCurrentPage(1);
+            setTimeout(() => setSearchLoading(false), 500);
         }
     };
 
@@ -170,8 +178,29 @@ const ShopGrid = () => {
     const filteredProducts = products.filter(product =>
         product.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
         product.price >= priceRange[0] && product.price <= priceRange[1] &&
-        (brand.length > 0 ? brand.includes(product.brand) : true)
+        (brand.length > 0 ? brand.includes(product.brand) : true) // brand now contains IDs
     );
+
+    // For displaying brand names in the filter tags, you'll need to fetch brand names
+    const [brandNames, setBrandNames] = useState({});
+
+    useEffect(() => {
+        const fetchBrandNames = async () => {
+            try {
+                const response = await fetch("https://phone-cloud-plus-backend.vercel.app/api/v1/brands");
+                const data = await response.json();
+                const brandMap = {};
+                data.getAllBrands.forEach(brand => {
+                    brandMap[brand._id] = brand.name;
+                });
+                setBrandNames(brandMap);
+            } catch (error) {
+                console.error("Failed to fetch brand names:", error);
+            }
+        };
+
+        fetchBrandNames();
+    }, []);
 
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         switch (sort) {
@@ -266,7 +295,7 @@ const ShopGrid = () => {
                                     <FilterTag
                                         icon={Tag}
                                         label="Brands"
-                                        value={brand.join(', ')}
+                                        value={brand.map(id => brandNames[id] || 'Loading...').join(', ')}
                                         onRemove={() => handleRemoveFilter('brand')}
                                     />
                                 )}
@@ -325,25 +354,15 @@ const ShopGrid = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6">
-                    {loading ? (
+                    {loading || searchLoading ? (
                         Array.from({ length: perPage }).map((_, index) => <SkeletonCard key={index} />)
                     ) : paginatedProducts.length > 0 ? (
                         paginatedProducts.map((product, index) => (
-                            <div
-                                key={index}
-                                className="flex flex-col justify-between p-2 sm:p-4 border rounded-md shadow-sm hover:shadow-lg transition cursor-pointer h-full bg-white"
-                                onClick={() => handleProductClick(product._id)}
-                            >
-                                <div>
-                                    <img src={product.imgCover} alt={product.title} className="w-full h-32 sm:h-48 object-cover mb-2 sm:mb-4 rounded-md" />
-                                    <h3 className="font-medium text-sm sm:text-base text-gray-800 line-clamp-2 hover:text-[#ff6600] transition-colors">{product.title}</h3>
-                                    <p className="text-base sm:text-lg font-bold font-mono mt-1">${product.price}</p>
-                                </div>
-                                <button className="group relative overflow-hidden bg-[#ff6600] text-white font-bold px-6 py-2 rounded-full text-sm mt-4 transition-all duration-300 self-end hover:bg-[#e65c00]">
-                                    <span className="relative z-10 group-hover:text-gray-600 transition-all duration-300">Add to Basket</span>
-                                    <div className="absolute inset-0 h-full w-full transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-out rounded-full bg-white origin-center"></div>
-                                </button>
-                            </div>
+                            <ProductCard
+                            key={product._id}
+                            product={product}
+                            onClick={handleProductClick} 
+                            />
                         ))
                     ) : (
                         <p className="text-center col-span-full text-gray-500 w-full">No products found.</p>

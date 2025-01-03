@@ -11,7 +11,7 @@ const RangeSlider = ({ onPriceRangeChange }) => {
     onPriceRangeChange(newValues);
   };
 
-  const markers = [0, 338, 775, 1163, max];
+  const markers = [0, 2000,5000, 7500, 11000, max];
 
   return (
     <div className="w-full px-2">

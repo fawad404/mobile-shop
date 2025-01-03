@@ -55,7 +55,7 @@ const PaginationControls = ({ totalPages, currentPage, perPage, onNext, onPrevio
               key={index}
               className={`px-3 py-2 rounded-md ${
                 p === currentPage
-                  ? 'bg-[#b091f8] text-gray-50'
+                  ? 'bg-orange-400 text-gray-50'
                   : 'bg-gray-200 hover:bg-gray-300'
               }`}
               onClick={() => goToPage(p)}

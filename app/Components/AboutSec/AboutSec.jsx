@@ -56,7 +56,7 @@ const AboutPage = () => {
                 Best deals on all types of Mobile phones, Mobile Accessories, Mobile Trade In & Mobile Repair
               </p>
               
-             <Link href='/shop'>
+             <Link href='/Shop'>
             <button className="group relative overflow-hidden mt-4 bg-white text-black font-bold px-10 py-4 rounded-full text-lg transition-all duration-300 hover:text-white">
               <span className="relative z-10">Shop Now!</span>
               <div className="absolute inset-0 h-full w-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-full bg-orange-500 to-black origin-left"></div>
