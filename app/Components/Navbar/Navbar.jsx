@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify' // Add toast import
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
 import { clearAuthUser } from '@/app/authUserSlice'; // Import clearAuthUser
+import CartDropdown from './CartDropdown';
 
 const navItems = [
   { path: "/", label: "Home" },
@@ -28,6 +29,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [cartCount, setCartCount] = useState(0);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const router = useRouter()
   const pathname = usePathname()
   const dropdownRef = useRef(null)
@@ -158,15 +160,19 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
-              <Link href="/Check-out" className="ml-3 relative">
-              <Button variant="ghost" size="icon" className="ml-3 relative">
-                <ShoppingCart className="h-5 w-5 text-gray-800" />
-                <span className="sr-only">Shopping cart</span>
-                <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-orange-500 text-xs text-white">
+          
+              <button
+                onClick={() => setIsCartOpen(true)}
+                className="p-2 hover:bg-gray-100 rounded-full relative"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-orange-500 text-xs text-white">
                   {cartCount}
                 </span>
-              </Button>
-              </Link>
+                )}
+              </button>
+              <CartDropdown isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
             </div>
           </div>
           

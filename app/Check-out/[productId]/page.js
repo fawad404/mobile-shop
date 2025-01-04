@@ -3,42 +3,39 @@ import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';  // Update this import
+import { useRouter } from 'next/navigation';
 
 import CheckoutForm from "@/app/Components/Checkout/CheckoutForm";
 import CompletePage from "@/app/Components/Checkout/CompletePage";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-export default function App() {
+export default function SingleProductCheckout({ params }) {
+  const resolvedParams = React.use(params);
   const [clientSecret, setClientSecret] = React.useState("");
   const [confirmed, setConfirmed] = React.useState(false);
   const cart = useSelector((state) => state.authUser.cart);
   const router = useRouter();
 
   React.useEffect(() => {
-    setConfirmed(new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    ));
-  });
-
-  React.useEffect(() => {
-    if (!cart.length) {
+    const product = cart.find(item => item.id.toString() === resolvedParams.productId);
+    
+    if (!product) {
       router.push('/Cart');
       return;
     }
 
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-    console.log('Full Cart Checkout:', {
-      items: cart,
-      subtotal: subtotal,
-      shipping: subtotal > 100 ? 0 : 10
-    });
+    const singleItem = [{
+      ...product,
+      quantity: 1 // Force quantity to 1 for single product purchase
+    }];
+
+    console.log('Single Product Checkout:', singleItem);
 
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: cart }),
+      body: JSON.stringify({ items: singleItem }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -49,25 +46,27 @@ export default function App() {
       })
       .catch((error) => {
         console.error('Payment Intent Error:', error);
-        router.push('/Cart');  // This stays the same
+        router.push('/Cart');
       });
-  }, [cart, router]);
+  }, [resolvedParams.productId, cart, router]);
 
+  // ... rest of the code same as regular checkout page
+  // ... (appearance, options, return statement)
   const appearance = {
-    theme: 'stripe',
-  };
-  const options = {
-    clientSecret,
-    appearance,
-  };
-
-  return (
-    <div className="App mt-32">
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          {confirmed ? <CompletePage /> : <CheckoutForm />}
-        </Elements>
-      )}
-    </div>
-  );
+      theme: 'stripe',
+    };
+    const options = {
+      clientSecret,
+      appearance,
+    };
+  
+    return (
+      <div className="App mt-32">
+        {clientSecret && (
+          <Elements options={options} stripe={stripePromise}>
+            {confirmed ? <CompletePage /> : <CheckoutForm />}
+          </Elements>
+        )}
+      </div>
+    );
 }

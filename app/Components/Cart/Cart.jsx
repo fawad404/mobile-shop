@@ -9,6 +9,7 @@ import { Label } from '../ui/label';
 import { Switch } from '../ui/switch';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateCart } from '@/app/authUserSlice';
+import { useRouter } from 'next/navigation';  // Update this import
 
 const EmptyCart = ({ darkMode }) => (
   <motion.div 
@@ -45,7 +46,7 @@ const ProductCard = ({ item, darkMode, updateQuantity, removeItem }) => (
       <div className="relative group">
         <img 
           src={item.image} 
-          alt={item.name} 
+          alt={item.title} 
           className="w-32 h-32 object-cover rounded-lg shadow-md transition-transform group-hover:scale-105" 
         />
         <div className={`absolute inset-0 rounded-lg ${
@@ -54,7 +55,7 @@ const ProductCard = ({ item, darkMode, updateQuantity, removeItem }) => (
       </div>
       
       <div className="text-center md:text-left mt-4 md:mt-0">
-        <h3 className="font-bold text-xl mb-2">{item.name}</h3>
+        <h3 className="font-bold text-xl mb-2">{item.title}</h3>
         <p className="text-orange-500 font-medium text-lg">${item.price.toFixed(2)}</p>
         <div className="flex items-center justify-center md:justify-start space-x-3 mt-3">
           <Button
@@ -83,14 +84,23 @@ const ProductCard = ({ item, darkMode, updateQuantity, removeItem }) => (
     </div>
 
     <div className="flex flex-col items-end mt-4 md:mt-0">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => removeItem(item.id)}
-        className="text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full"
-      >
-        <Trash2 className="h-5 w-5" />
-      </Button>
+      <div className="flex items-center gap-3 mb-3">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => removeItem(item.id)}
+          className="text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full"
+        >
+          <Trash2 className="h-5 w-5" />
+        </Button>
+        <Link href={`/Check-out/${item.id}`}>
+          <Button
+            className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-3 py-1"
+          >
+            Buy Now
+          </Button>
+        </Link>
+      </div>
       <p className="font-medium mt-2">
         Subtotal: <span className="text-orange-500">${((item.quantity || 1) * item.price).toFixed(2)}</span>
       </p>
@@ -98,10 +108,11 @@ const ProductCard = ({ item, darkMode, updateQuantity, removeItem }) => (
   </motion.div>
 );
 
-const Checkout = () => {
+const Cart = () => {
   const [darkMode, setDarkMode] = useState(false);
   const cart = useSelector((state) => state.authUser.cart); // Get cart from Redux store
   const dispatch = useDispatch();
+  const router = useRouter();  // This stays the same but uses new navigation
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -110,7 +121,11 @@ const Checkout = () => {
   }, [dispatch]);
 
   const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return;
+    if (newQuantity < 1) {
+      removeItem(id);
+      return;
+    }
+    
     const updatedCart = cart.map(item =>
       item.id === id ? { ...item, quantity: newQuantity } : item
     );
@@ -126,6 +141,13 @@ const Checkout = () => {
     window.dispatchEvent(new Event('storage')); // Trigger the storage event
   };
 
+  const handleCheckout = () => {
+    if (!cart.length) {
+      return;
+    }
+    router.push('/Check-out');  // This stays the same
+  };
+
   const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
   const shipping = subtotal > 100 ? 0 : 10;
   const total = subtotal + shipping;
@@ -135,14 +157,6 @@ const Checkout = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8 mt-16">
           <h1 className="text-3xl font-bold">Checkout</h1>
-          <div className="flex items-center space-x-2">
-            <Label htmlFor="dark-mode">Dark Mode</Label>
-            <Switch
-              id="dark-mode"
-              checked={darkMode}
-              onChange={() => setDarkMode(!darkMode)}
-            />
-          </div>
         </div>
 
         <AnimatePresence mode="wait">
@@ -193,33 +207,20 @@ const Checkout = () => {
                       </p>
                     )}
                   </div>
-                </div>
 
-                <div className={`p-6 rounded-lg ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-                  <h2 className="text-2xl font-semibold mb-4">Payment Details</h2>
-                  <form className="space-y-4">
-                    <div>
-                      <Label htmlFor="card-number">Card Number</Label>
-                      <Input id="card-number" placeholder="1234 5678 9012 3456" />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="expiry-date">Expiry Date</Label>
-                        <Input id="expiry-date" placeholder="MM/YY" />
-                      </div>
-                      <div>
-                        <Label htmlFor="cvv">CVV</Label>
-                        <Input id="cvv" placeholder="123" />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="name-on-card">Name on Card</Label>
-                      <Input id="name-on-card" placeholder="John Doe" />
-                    </div>
-                    <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2">
-                      Pay ${total.toFixed(2)}
-                    </Button>
-                  </form>
+                  <Button 
+                    onClick={handleCheckout}
+                    className="w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white px-4 py-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg"
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    <span className="text-lg font-semibold">Proceed to Checkout</span>
+                  </Button>
+
+                  <div className="mt-4 p-4 bg-orange-100 rounded-lg">
+                    <p className="text-sm text-orange-700 text-center">
+                      Secure Checkout • Fast Shipping • Easy Returns
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -230,5 +231,5 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default Cart;
 
