@@ -29,7 +29,7 @@ export default function App() {
     }
 
     const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
-    console.log('Full Cart Checkout:', {
+    console.log('Full Cart Checkout :', {
       items: cart,
       subtotal: subtotal,
       shipping: subtotal > 100 ? 0 : 10
